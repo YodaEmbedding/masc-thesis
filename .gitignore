@@ -1,0 +1,6 @@
+# img/
+out/
+
+*.aux
+*.blg
+*.log
