@@ -1,0 +1,39 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{review}[2020/05/18 Commands to help with reviewing]
+
+\newif\if@review
+
+\def\enablereview{\@reviewtrue}
+\def\disablereview{\@reviewfalse}
+
+\def\unresolvedcolor{red}
+\def\resolvedcolor{green}
+\def\replycolor{blue}
+
+\long\def\unresolved#1{%
+  \if@review%
+    \textcolor{\unresolvedcolor}{(\trim{#1})}%
+  \else%
+    \ignorespaces%
+  \fi%
+}
+
+\long\def\resolved#1{%
+  \if@review%
+    \textcolor{\resolvedcolor}{(\trim{#1})}%
+  \else%
+    \ignorespaces%
+  \fi%
+}
+
+\long\def\reply#1{%
+  \if@review%
+    \textcolor{\replycolor}{(\trim{#1})}%
+  \else%
+    \ignorespaces%
+  \fi%
+}
+
+\disablereview
+
+\endinput

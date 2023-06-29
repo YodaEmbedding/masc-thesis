@@ -1,0 +1,80 @@
+\documentclass[]{sfuthesis}
+
+\input{tex/preamble}
+% \tikzexternalize[prefix=out/]
+
+\title{Learned Compression for Images and Point Clouds}
+\author{Mateen Ulhaq}
+\date{today}
+
+\thesistype{Thesis}
+\previousdegrees{}
+\degree{Master of Applied Science}
+\discipline{Engineering}
+\department{School of Engineering Science}
+\faculty{Faculty of Applied Sciences}
+\copyrightyear{2023}
+\semester{Summer 2023}
+
+\keywords{%
+  deep learning;
+  compression;
+  inference%
+}
+
+\committee{%
+  \chair{Dr. Ivan V. Baji\'c, P.Eng.}{Academic Supervisor \\ Professor}
+  % \member{Dr. Mirza Faisal Beg, P.Eng.}{Committee \\ Professor}
+  % \member{Dr. Jie Liang, P.Eng.}{Committee \\ Professor}
+}
+
+\includeonly{
+  tex/abstract,
+  % tex/acknowledgments,
+  % tex/introduction/init,
+  tex/point_cloud/init,
+  % tex/conclusion/init,
+}
+
+\begin{document}
+
+\frontmatter
+
+\maketitle
+\makecommittee
+\include{tex/abstract}
+\include{tex/acknowledgments}
+
+\clearpage
+\phantomsection
+\pdfbookmark{\contentsname}{toc}
+\tableofcontents
+\listoffigures
+
+\clearpage
+\pagenumbering{arabic}
+
+\mainmatter
+
+% https://tex.stackexchange.com/questions/1989/speed-up-compilation-by-pre-compiling-chapters-separately
+% https://tex.stackexchange.com/questions/246/when-should-i-use-input-vs-include
+%
+% Use \include for each chapter.
+% Use \input for each section.
+
+\include{tex/introduction/init}
+\include{tex/imagecompression/init}
+\include{tex/point_cloud/init}
+\include{tex/conclusion/init}
+
+\backmatter
+
+\clearpage
+\phantomsection
+\addcontentsline{toc}{chapter}{References}
+\printbibliography[title=References]
+
+% \appendix
+% \input{tex/appendix.tex}
+
+\end{document}
