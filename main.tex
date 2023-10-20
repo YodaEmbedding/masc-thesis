@@ -28,12 +28,10 @@
   % \member{Dr. Jie Liang, P.Eng.}{Committee \\ Professor}
 }
 
-\includeonly{
-  tex/abstract,
-  % tex/acknowledgments,
-  % tex/introduction/init,
-  tex/point_cloud/init,
-  % tex/conclusion/init,
+\IfFileExists{tex/includeonly.tex}{%
+  \input{tex/includeonly}%
+}{%
+  \typeout{To include only specific chapters, create tex/includeonly.tex}%
 }
 
 \begin{document}
@@ -63,8 +61,9 @@
 % Use \input for each section.
 
 \include{tex/introduction/init}
-\include{tex/imagecompression/init}
-\include{tex/point_cloud/init}
+\include{tex/pdf_compression/init}
+\include{tex/image_compression/init}
+\include{tex/point_cloud_compression/init}
 \include{tex/conclusion/init}
 
 \backmatter
