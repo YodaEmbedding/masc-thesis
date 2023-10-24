@@ -1,0 +1,232 @@
+\usepackage[english]{babel}             % ensure USenglish hyphenation
+\usepackage[T1]{fontenc}                % copyable accent characters (e.g. ö)
+% \usepackage[utf8]{inputenc}             % included by default since 2018
+% \usepackage{textcomp}                   % included by default since 2020
+
+\PassOptionsToPackage{hyphens}{url}
+
+% Load before most packages https://tex.stackexchange.com/a/26592/2930
+\usepackage[
+  hidelinks,                            % remove colored boxes around links
+  pdfusetitle,                          % use \title and \author for PDF metadata
+  colorlinks,                           % color links instead of boxes (like CVPR)
+  linkcolor=black,                      % color of internal links
+]{hyperref}
+
+% Bibliography
+\usepackage[
+  style=ieee,
+  backref=true,
+  backrefstyle=none,
+]{biblatex}
+
+\usepackage{amssymb}
+\usepackage[titletoc]{appendix}
+\usepackage{booktabs}                   % \toprule, \midrule, \bottomrule
+\usepackage[font=small, skip=12pt, labelfont=bf]{caption}
+\usepackage[inline]{enumitem}           % Advanced enumerate and itemize.
+% \usepackage{fancyvrb}
+\usepackage{float}                      % \begin{figure}[H]
+% \usepackage{fp}
+\usepackage{geometry}
+\usepackage{graphicx}
+\usepackage{grffile}                    % graphicx filename extensions
+\usepackage{import}                     % \import
+\usepackage{makecmds}                   % \provideenvironment
+\usepackage{mathtools}
+\usepackage{microtype}                  % improves spacing between words and letters
+% \usepackage[super]{nth}
+\usepackage{placeins}                   % \FloatBarrier
+\usepackage{setspace}                   % \onehalfspacing
+\usepackage{silence}                    % \WarningFilter
+\usepackage{standalone}
+\usepackage{subcaption}                 % \begin{subfigure}
+\usepackage{tabularx}                   % \begin{tabularx}
+\usepackage{titlesec}                   % improves spacing between section headings
+\usepackage{threeparttable}             % \begin{tablenotes}
+% \usepackage{trimspaces}                 % \trim@spaces
+\usepackage{xcolor}                     % \textcolor
+
+\usepackage{lmodern}                    % font: Latin Modern
+% \usepackage{unicode-math}               % font: Latin Modern Math (XeTeX/LuaTeX)
+% \usepackage{newpxtext,newpxmath}        % font: Palatino
+\usepackage{newtxtext}                  % font: Times
+% \usepackage{newtxmath}                  % font: Times Math
+
+\usepackage[outputdir=out]{minted}      % code highlighting
+
+% % Load subcaption with compatibility with IEEEtran:
+% % https://tex.stackexchange.com/questions/154435/ieee-template-and-caption-false-option-for-subcaption-package
+% \makeatletter
+% \let\MYcaption\@makecaption
+% \makeatother
+% \WarningFilter*{caption}{Unknown document class (or package)}
+% \usepackage[font=footnotesize]{subcaption}
+% \makeatletter
+% \let\@makecaption\MYcaption
+% \makeatother
+
+% Load after minted/fvextra
+\usepackage{csquotes}
+
+% % Load after xcolor
+% \usepackage{tikz}
+
+% Load after subcaption
+\usepackage{alphalph}
+
+% Load after amsmath
+\usepackage[
+  capitalize,
+  nameinlink,
+  % noabbrev,
+]{cleveref}
+
+
+% Abstract for book documentclass
+\provideenvironment{abstract}{}{}
+\usepackage{abstract}
+
+% Custom packages
+% \usepackage{review}
+
+% References
+\addbibresource{references/cfm.bib}
+\addbibresource{references/compression.bib}
+\addbibresource{references/imagecompression.bib}
+\addbibresource{references/misc.bib}
+\addbibresource{references/pointcloud.bib}
+\addbibresource{references/pointcloudcompression.bib}
+
+% % TikZ libraries
+% \usetikzlibrary{
+%   external,
+% }
+
+% Code listing style
+\usemintedstyle{pastie}
+
+
+% TODO is all this necessary?
+
+
+% Suppress warnings
+\pdfsuppresswarningpagegroup=1
+
+% Keep footnotes on one page
+\interfootnotelinepenalty=10000
+
+% Page margins
+\newgeometry{
+  top=1in,
+  left=1.25in,
+  bottom=0.7in,
+  right=1.25in,
+  includefoot
+}
+
+% Line spacing
+\onehalfspacing
+
+% Empty header; page number in footer
+\pagestyle{plain}
+
+% Automatically style inner and outer quotation marks
+\MakeOuterQuote{"}
+
+% Citation style
+\DeclareFieldFormat{title}{\mkbibquote{#1}}
+
+% % Allow spaces to stretch more to prevent overfull \hbox problems. See:
+% % https://tex.stackexchange.com/a/59131 and
+% % https://tex.stackexchange.com/a/50850
+% \setlength{\emergencystretch}{3em}
+
+% % Alpha-alpha numbering for subfigures; e.g., (a) ... (z) (aa) (ab) ...
+% \renewcommand*{\thesubfigure}{\alphalph{\value{subfigure}}}
+
+% % Text labels
+% \newcommand{\comment}[1]{#1}
+% \newcommand{\incorporate}[1]{#1}
+% \newcommand{\fixword}[1]{#1}
+% \newcommand{\fakeref}[1]{\textbf{#1}}
+
+% % Trim spaces within commands
+% \makeatletter
+% \newcommand*{\trim}[1]{%
+%   \trim@spaces@noexp{#1}%
+% }
+% \makeatother
+
+% % Environment for aligned symbol definitions
+% \newenvironment{conditions}{%
+%   \par\vspace{\abovedisplayskip}\noindent
+%   \tabularx{\columnwidth}{%
+%     >{$}l<{$} @{${}={}$} >{\raggedright\arraybackslash}X%
+%   }%
+% }{%
+%   \endtabularx\par\vspace{\belowdisplayskip}%
+% }
+
+% Command for referencing subfigures within figure captions
+\newcommand{\csubref}[1]{%
+  (\subref{#1})%
+}
+
+% cref equation references in the style of (1)
+\crefname{equation}{}{}
+
+% Code listing
+\newif\ifhighlightcode
+\highlightcodetrue
+
+\makeatletter
+\ifhighlightcode%
+  \let\codelisting\minted
+  \let\endcodelisting\endminted
+\else%
+  \newenvironment{codelisting}[2][]{%
+    \VerbatimEnvironment
+    \begin{Verbatim}%
+  }{%
+    \end{Verbatim}%
+    \ignorespacesafterend%
+  }%
+\fi
+\makeatother
+
+% Review
+% \enablereview
+
+
+
+
+\DeclareMathOperator{\E}{\mathbb{E}}
+\DeclareMathOperator{\sign}{sign}
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator*{\argmin}{arg\,min}
+\newcommand{\boldvar}[1]{{\boldsymbol{#1}}}
+
+
+% https://tex.stackexchange.com/questions/78098/captioning-nested-subfigures-with-subcaption/689184#689184
+\newenvironment{subsubfigure}[2][]{%
+  \begin{subfigure}[#1]{#2}%
+    \stepcounter{subsubfigure}%
+    \renewcommand{\thesubfigure}{\roman{subsubfigure}}%
+}{%
+    \addtocounter{subfigure}{-1}%
+  \end{subfigure}%
+}
+\newcounter{subsubfigure}
+
+
+\newlength{\tablesepskip}
+\newlength{\tablesubheaderskip}
+
+
+
+
+
+\setlength\aboverulesep{0.3827ex+0.1\normalbaselineskip}
+\setlength\belowrulesep{0.6219ex+0.1\normalbaselineskip}
+
