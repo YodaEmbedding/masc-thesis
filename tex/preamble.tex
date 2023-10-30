@@ -93,6 +93,23 @@
 \addbibresource{references/pointcloud.bib}
 \addbibresource{references/pointcloudcompression.bib}
 
+
+% Do not print DOI if URL or eprint is present.
+% https://tex.stackexchange.com/questions/29802/biblatex-and-new-line-for-doi-url-and-eprint
+\renewbibmacro*{doi+eprint+url}{%
+  \iftoggle{bbx:doi}
+    {\iffieldundef{url}{\iffieldundef{eprint}{\printfield{doi}}{}}}
+    {}%
+  \newunit\newblock
+  \iftoggle{bbx:eprint}
+    {\usebibmacro{eprint}}
+    {}%
+  \newunit\newblock
+  \iftoggle{bbx:url}
+    {\usebibmacro{url+urldate}}
+    {}}
+
+
 % % TikZ libraries
 % \usetikzlibrary{
 %   external,
