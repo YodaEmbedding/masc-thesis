@@ -87,6 +87,37 @@
 \provideenvironment{abstract}{}{}
 \usepackage{abstract}
 
+
+% Chapter abstracts
+% See also:
+% https://tex.stackexchange.com/questions/309072/how-to-add-abstract-for-selected-chapters-in-my-thesis
+% https://tex.stackexchange.com/questions/377893/configure-the-abstract-at-a-chapter-of-thesis-in-the-same-page-with-chapters-ti
+\newenvironment{chapabstract}{%
+  % \begin{quote}%
+  %   \small \rule{14cm}{1pt}%
+  \begin{list}{}{%
+    \setlength{\leftmargin}{12.5mm}%
+    \setlength{\rightmargin}{\leftmargin}%
+  }%
+  \item%
+    \begin{center}%
+      \rule{\linewidth}{1pt}%
+      \vspace*{-0.5ex+1ex}
+      \large \bfseries Abstract
+      \vspace{-.5em} \vspace{0pt}
+    \end{center}
+  \item\relax%
+}{%
+  \par%
+  \vspace{-\baselineskip+1ex+1ex}%
+  \rule{\linewidth}{1pt}%
+  \end{list}%
+  \vspace{1ex}%
+  %   \vskip-4mm\rule{14cm}{1pt}%
+  % \end{quote}%
+}
+
+
 % References
 \addbibresource{references/cfm.bib}
 \addbibresource{references/compression.bib}
