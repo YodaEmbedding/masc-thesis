@@ -893,27 +893,27 @@ As shown, our approach achieves a 6.95\% BD-rate reduction over the base model, 
   }
   \label{tbl:pdf}
   \small
-  \begin{tabular}[]{cccccc}
+  \begin{tabular}[]{ccccccc}
     \toprule
+    % TODO reorder columns?
     \thead{Quality}
     & \thead{Original \\ (bpp)}
-    & \thead{Potential \\ savings (bpp)}
-    % Todo swap columns 4 and 5
+    & \thead{Potential \\ gain (bpp)}
     & \thead{Potential \\ BD-rate}
-    & \thead{Our savings \\ (bpp)}
+    & \thead{Our \\ (bpp)}
+    & \thead{Our gain \\ (bpp)}
     & \thead{Our \\ BD-rate} \\
     % & & $\propto D_{\mathrm{KL}}(\boldvar{p} \parallel \boldvar{p_{\textnormal{default}}})$ & & $\propto D_{\mathrm{KL}}(\boldvar{p} \parallel \boldvar{\hat{p}})$ & \\
     \midrule
-    % Q  & origbpp&potsave& potBD&our sav& ourBD \\
-    1    &  0.123 & 0.011 & -8.9 & 0.010 & -8.3 \\
-    2    &  0.189 & 0.016 & -8.5 & 0.014 & -7.5 \\
-    3    &  0.288 & 0.023 & -8.0 & 0.021 & -7.2 \\
-    4    &  0.440 & 0.034 & -7.7 & 0.031 & -6.9 \\
-    5    &  0.648 & 0.050 & -7.7 & 0.045 & -7.0 \\
-    6    &  0.967 & 0.079 & -8.2 & 0.069 & -7.1 \\
-    7    &  1.351 & 0.111 & -8.2 & 0.098 & -7.2 \\
-    8    &  1.833 & 0.148 & -8.1 & 0.129 & -7.0 \\
-    mean &        &       & -8.1 &       & -7.3 \\
+    1 & 0.122 & -0.012 & -9.45 & 0.113 & -0.009 & -7.66 \\
+    2 & 0.188 & -0.016 & -8.66 & 0.175 & -0.013 & -7.13 \\
+    3 & 0.287 & -0.024 & -8.20 & 0.268 & -0.019 & -6.76 \\
+    4 & 0.440 & -0.035 & -7.90 & 0.411 & -0.029 & -6.57 \\
+    5 & 0.647 & -0.051 & -7.83 & 0.605 & -0.043 & -6.57 \\
+    6 & 0.965 & -0.080 & -8.25 & 0.898 & -0.067 & -6.95 \\
+    7 & 1.349 & -0.111 & -8.24 & 1.254 & -0.095 & -7.04 \\
+    8 & 1.830 & -0.149 & -8.14 & 1.705 & -0.126 & -6.88 \\
+    mean &    &        & -8.33 &       &        & -6.95 \\
     \bottomrule
   \end{tabular}
 \end{table}
