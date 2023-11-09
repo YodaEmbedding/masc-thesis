@@ -960,10 +960,12 @@ We then averaged these values across the entire dataset.
     \midrule
       % NOTE: Their measured gap may differ because they may not have evaluated at the same lambda values / rate points. (TODO footnote?) Or maybe they only did the Q=1 model...!!! See if they say in the paper. Show our results for that too, for comparison. Maybe two separate tables...
     bmshj2018-factorized~\cite{balle2018variational} + \cite{balcilar2022amortizationgap} (Q=1)
-      % &   100 & -9.5  & -6.79 & -6.79 \\
-      &   100 & -9.45 & -6.79 & -6.79 \\  % TODO verify 9.45
+      &   100 & -9.45 & -6.79 & -6.79 \\
     bmshj2018-factorized~\cite{balle2018variational} + ours (Q=1)
       &   100 & -9.45 & -7.66 & -7.66  \\
+    % TODO digitize and measure:
+    % bmshj2018-factorized~\cite{balle2018variational} + \cite{balcilar2022amortizationgap}
+    %   &   100 & -... & -... & -... \\  % TODO
     bmshj2018-factorized~\cite{balle2018variational} + ours
       &   100 & -8.33 & -6.95 & -6.95  \\
     % TODO
@@ -985,21 +987,52 @@ We then averaged these values across the entire dataset.
   \begin{tabular}[]{ccccc}
     \toprule
     % NOTE: We can make the table more horizontally compact by swapping top to contain "Params, MACs/pixel".
-    \multirow{3}{*}[1ex]{\thead{Model \\ configuration \\[3pt] $(N_q, M_q, K, G, B)$}}
-    & \multicolumn{2}{c}{\thead{$h_{a,q}$}}
-    & \multicolumn{2}{c}{\thead{$h_{s,q}$}}
-    \\
-    \cmidrule(lr){2-3}
-    \cmidrule(lr){4-5}
+    % \multirow{3}{*}[1ex]{\thead{Model \\ configuration \\[3pt] $(N_q, M_q, K, G, B)$}}
+    \thead{Model configuration}
     & \thead{Params}
     & \thead{MACs/pixel}
     & \thead{Params}
     & \thead{MACs/pixel}
     \\
     \midrule
-    $(32, 16, 15, 8, 256)$ & 0.029M & 10.5 & 0.029M & 10.5 \\
-    % TODO verify computations with strides... especially for ConvTranspose...
-    % TODO And add more rows...
+    \thead{$(M_y, N_q, M_q, K, G, B)$}
+    & \multicolumn{2}{c}{\thead{$h_{a,q}$}}
+    & \multicolumn{2}{c}{\thead{$h_{s,q}$}}
+    \\
+    \cmidrule(lr){1-1}
+    \cmidrule(lr){2-3}
+    \cmidrule(lr){4-5}
+    %
+    % dim = 1  # For 1D.
+    % dim = 2  # For 2D.
+    %
+    % def params(in_channels, out_channels, kernel_size, stride_total, groups):
+    %     return in_channels * out_channels * kernel_size ** dim / groups
+    %
+    % def macs(in_channels, out_channels, kernel_size, stride_total, groups):
+    %     return in_channels * out_channels * kernel_size ** dim / groups / stride_total ** dim
+    %
+    % f = params
+    % sum([
+    %     f(M_y, M_y // 2, 5, 1, 8),
+    %     f(M_y // 2, N_q, 15, 2, 8),
+    %     f(N_q, N_q, 15, 4, 8),
+    %     f(N_q, N_q, 15, 8, 8),
+    %     f(N_q, M_q, 15, 8, 1),
+    % ]) * (B / (768 * 512) if f == macs else 1)
+    %
+    Ours $(192, 32, 16, 15, 8, 256)$  & 0.316M & 10 & 0.316M & 10 \\
+    Ours $(320, 64, 32, 15, 8, 1024)$ & 0.097M & 126 & 0.097M & 126 \\[3pt]
+    \midrule
+    \thead{$(N, M)$}
+    & \multicolumn{2}{c}{\thead{$h_{a}$}}
+    & \multicolumn{2}{c}{\thead{$h_{s}$}}
+    \\
+    \cmidrule(lr){1-1}
+    \cmidrule(lr){2-3}
+    \cmidrule(lr){4-5}
+    bmshj2018-hyperprior~\cite{balle2018variational} $(128, 192)$ & 1.040M & 1364 & 1.040M & 1364 \\
+    bmshj2018-hyperprior~\cite{balle2018variational} $(192, 320)$ & 2.396M & 3285 & 2.396M & 3285 \\[3pt]
     \bottomrule
   \end{tabular}
 \end{table}
