@@ -1,0 +1,4 @@
+[submodule "submodules/assets"]
+	path = submodules/assets
+	url = git@github.com:YodaEmbedding/masc-thesis.git
+	branch = assets/main
