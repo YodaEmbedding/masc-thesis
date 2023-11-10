@@ -1,0 +1,17 @@
+\clearpage
+\phantomsection
+\addcontentsline{toc}{chapter}{Abstract}
+\newcounter{abstractpage}
+\setcounter{abstractpage}{\value{page}}
+
+\begin{abstract}
+  \thispagestyle{plain}
+  \setcounter{page}{\value{abstractpage}}
+
+  TODO
+
+  \setcounter{abstractpage}{\value{page}}
+\end{abstract}
+
+\setcounter{page}{\value{abstractpage}}
+\stepcounter{page}
