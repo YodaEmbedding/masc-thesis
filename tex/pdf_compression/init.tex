@@ -1,13 +1,6 @@
 \chapter{Compression of probability distributions}
 \label{ch:pdf_compression}
 
-% TODO:
-% Experiments
-% Introduction (already done?)
-% Related works
-% Conclusion
-% DiscreteEntropyBottleneck
-
 
 \begin{chapabstract}
   The entropy bottleneck introduced by Ballé~\emph{et~al.}~\cite{balle2018variational} is a common component used in many learned compression models.
@@ -22,22 +15,14 @@
   Finally, the decoder reconstructs the encoding distribution and uses it to decompress the corresponding latent data.
   Our method achieves a BD-rate gain of -6.95\% on the Kodak test dataset when applied to the standard fully factorized architecture.
   % When used in conjunction with a parallelized RDOQ strategy, the BD-rate shows a gain of TODO\%.
-  %
-  %
-  % We propose a method for compressing probability distributions, which is applied to the entropy bottleneck of learned image compression models.
-  % The proposed method is capable of adapting to the input distribution, rather than using a fixed dataset-optimized probability distribution which suffers from the amortization gap.
-  % We demonstrate that our input-adaptive method can be used by models containing the entropy bottleneck in order to achieve better rate-distortion performance than using a single, dataset-optimized probability distribution.
-  % The proposed method is simple, and can be easily integrated into existing entropy bottleneck architectures.
-  % All experiments are performed using the Kodak test dataset~\cite{kodak_dataset}.
-  % Our method achieves a BD-rate of $-\%$ compared to the base fully-factorized entropy bottleneck~\cite{balle2018variational}, and a BD-rate of $-...\%$ with additional RDOQ.
 \end{chapabstract}
 
 
+
+
+% TODO(review): Rephrase more compactly.
 \section{Introduction}
 \label{sec:pdf_compression/intro}
-
-% TODO Slightly repetitive, wordy, and repetitive.
-% TODO Explain compression theory, Shannon, optimal RD theory?
 
 At the heart of compression is the probability distribution.
 % We have an input distribution (usually, abstract, and undefinable).
@@ -45,17 +30,14 @@ At the heart of compression is the probability distribution.
 Typically, we model the data to be compressed using a probability distribution.
 It is less common to model the probability distribution itself.
 Nonetheless, as will soon see, there is potential value in doing so.
-% Just like "side-information" in the "hyperprior" models.
 
 In this chapter, we explore the compression of probability distributions that are used in compression.
 Specifically, we will focus on probability distributions that are used to model the latent representations produced by an image compression model.
 The entropy models of learned image compression models utilize probability distributions to compress transformed latent representations.
-% For example, the methods introduced by Ballé~\emph{et~al.}~\cite{balle2018variational} model a latent representation $\boldvar{y}$ using:
 For example, Ballé~\emph{et~al.}~\cite{balle2018variational} model a latent representation $\boldvar{y}$ using the following entropy models:
 \begin{enumerate}
   \item
-    % A learned non-parametric per-channel distribution, known as the "fully factorized" \emph{entropy bottleneck}.
-    A "fully factorized" \emph{entropy bottleneck}. % , which consists of a learned non-parametric distribution for each channel.
+    A "fully factorized" \emph{entropy bottleneck}.
     Each element ${y}_{c,i}$ within the $c$-th channel is modelled using a single channel-specific non-parametric probability distribution ${p}_{c}(y)$, which is fixed once training completes.
     That is, the elements ${y}_{c,1}, {y}_{c,2}, \ldots, {y}_{c,H W}$ within the $c$-th channel are assumed to be drawn from independent and identically distributed (i.i.d.) random variables with the probability distribution ${p}_c(y)$.
   \item
@@ -66,7 +48,6 @@ For example, Ballé~\emph{et~al.}~\cite{balle2018variational} model a latent rep
 Both of these have their advantages and disadvantages.
 Of these two, the entropy bottleneck is the most flexible at modeling arbitrary distributions.
 Indeed, it often does, modeling many channels via Laplacian-like distributions, which the latent representations often tend towards.
-% Interestingly, both high rate and low rate tend to be Laplacian-shaped.
 However, because all elements within a given channel are modelled using the same distribution, it is quite poor at specializing and adapting to specific input distributions.
 Instead, it models a "conservative" distribution that tries to encompass all possible inputs, which is often suboptimal, as we will show later in this chapter.
 This is sometimes known as the \emph{amortization gap}~\cite{balcilar2022amortizationgap,cremer2018inferencesuboptimality}.
@@ -86,41 +67,16 @@ In this chapter, we propose a method to address this amortization gap via the co
 This allows the entropy bottleneck method to adapt to the input distribution, rather than using a fixed dataset-optimized probability distribution which suffers from the amortization gap.
 We demonstrate that our input-adaptive method can be used by models containing the entropy bottleneck in order to achieve better rate-distortion performance.
 
-% Are optimized for a dataset of images.
-% We show that by using image-specific probability distributions, we can achieve better rate-distortion performance than using a single, dataset-optimized probability distribution.
-
 
 
 
 \section{Related works}
 \label{sec:pdf_compression/related}
 
-% Interdigital -- "Entropy Coding Improvement for Low-complexity Compressive Auto-encoders"
-% ~\cite{galpin2023entropy}
-% Low-complexity non-deep raster scan context modeling, channel ordering, RDOQ applied in raster-scan order tensor per-element.
-% ...
-% (show images/tables for comparison?)
-%
-% Disney - "Content Adaptive Optimization for Neural Image Compression"
-% ~\cite{campos2019content}
-% https://arxiv.org/abs/1906.01223
-%
-% Interdigital - "Reducing The Amortization Gap of Entropy Bottleneck In End-to-End Image Compression"
-% \cite{balcilar2022amortizationgap}
-% https://arxiv.org/abs/2209.00964
-% Transmits manually encoded quantized to 8-bit parameters that follow mixed Gaussian model
-%
-% Orange Labs - "COOL-CHIC: Coordinate-based Low Complexity Hierarchical Image Codec"
-% https://arxiv.org/abs/2212.05458
-%
-% Orange Labs - "Low-complexity Overfitted Neural Image Codec"
-% https://arxiv.org/abs/2307.12706
-
-
 In Campos~\emph{et~al.}~\cite{campos2019content}, the latent $y$ is refined by performing gradient descent to optimize it, while holding the trained model parameters fixed.
 This is effectively a form of Rate-Distortion Optimized Quantization (RDOQ), though the optimized loss
 $L = R_{\boldvar{\tilde{y}}} + \lambda_x D(\boldvar{x}, \boldvar{\tilde{x}})$
-is not precisely aware of the exact effect of quantization.  % TODO reword?
+is not precisely aware of the exact effect of quantization.  % TODO(review): reword?
 
 Balcilar~\emph{et~al.}~\cite{balcilar2022amortizationgap} propose non-learned methods for the compression and transmission of the encoding distributions.
 For the factorized entropy model, they first measure a discrete histogram of the $c$-th latent channel.
@@ -128,16 +84,21 @@ Then, they construct an approximation of the histogram using a $K$-Gaussian mixt
 The aforementioned parameters are compactly encoded into 8~bits each, and transmitted.
 That is, for a model using $C$ activated channels, $(3K - 1) \cdot C \cdot 8$ bits are required to transmit the parameters.
 (Typically, $K \in [1, 3]$ is used, and $C \in [16, 192]$ for low-rate models.)
-The approximation model is then used as the encoding distribution % for the latent channel,
+The approximation model is then used as the encoding distribution
 $p_{\boldvar{\hat{y}}}(\boldvar{\hat{y}}_c) = \sum_{k=1}^K w_k \; \mathcal{\hat{N}}(\boldvar{\hat{y}}_c ; \, \mu_k, \, {\sigma_k}^2)$.
 For the Gaussian conditional entropy model, they instead transmit a factor $\beta^{(c)}$ that corrects the error in the center (and most likely) bin's probability.
-% The primary difference
 A key difference between our work and this prior work is that we formulate a learnable method for the compression of the encoding distribution.
 
 Galpin~\emph{et~al.}~\cite{galpin2023entropy} introduce a lightweight non-learned context model for raster-scan ordered encoding, similar to Minnen~\emph{et~al.}~\cite{minnen2018joint}.
 They also implement a simple raster-scan ordered greedy RDOQ method which repeatedly reruns the decoder on the quantized y hat to discretely optimize the loss.
 To reduce the computational cost of the RDOQ process, the loss estimation is restricted within the receptive field (a $9 \times 9$ latent window) and only delta y hat in $\{-1, 0, +1\}$ is explored.
 They then compare their proposed methods in conjunction with~\cite{campos2019content,balcilar2022amortizationgap} in various configurations on both the standard factorized model and its GDN to ReLU replacement model variant.
+
+% Orange Labs - "COOL-CHIC: Coordinate-based Low Complexity Hierarchical Image Codec"
+% https://arxiv.org/abs/2212.05458
+%
+% Orange Labs - "Low-complexity Overfitted Neural Image Codec"
+% https://arxiv.org/abs/2307.12706
 
 
 
@@ -146,47 +107,25 @@ They then compare their proposed methods in conjunction with~\cite{campos2019con
 
 \subsection{Compression of probability distributions}
 
-% To close the amortization gap, we propose a method that adapts to the input distribution.
-% Is that why it's called FillGap?
-% And compresses the distribution, of course.
-% In order to understand the importance of this, ...
-
-% One drawback is that need to measure distribution explicitly, or "estimate" a good proxy...
-
-% TODO clarify, collection of probability distributions,
+% Clarify, collection of probability distributions?
 % $\boldvar{p} = (\boldvar{p}_1, \boldvar{p}_2, \ldots, \boldvar{p}_M)$ is a collection of probability distributions, one for each channel.
 
 Let $\boldvar{x}$ be an input image, and $\boldvar{y} = g_a(\boldvar{x})$ be its transformed latent representation.
 Consider a fully-factorized entropy model~\cite{balle2018variational}, which models $\boldvar{\hat{y}} = \operatorname{Quantize}[\boldvar{y}]$ using a single channel-specific non-parametric probability distribution $\boldvar{\hat{p}}_j$ for each channel $j$.
 Since all elements within a given channel are modelled using the same distribution, in this setting, the "true" probability distribution $\boldvar{p}_j$ for the $j$-th channel of $\boldvar{y}$ can be determined exactly by computing the normalized histogram of $\boldvar{\hat{y}}_j$.
-% $\boldvar{\hat{y}}_j = \operatorname{Quantize}[\boldvar{y}_j]$.
-% The _j can be inside or outside the Q operator since every channel is quantized "independently" and "identically", i.e.,
-% Q(y) = [Q(y_1), Q(y_2), ..., Q(y_M)]
-% From a category theory perpective, Q(I(y)) = I(Q(y)) is a commutative diagram, where I(y) = y_j.
-% Or a product category, or something like that.
-% And something related I saw in group theory once... I forget.
-%
-% But wait... under RDOQ, the quantization is not "i.i.d.", so (Q(y))_j might be more generally accurate.
-%
-% Avoid cyclic definition... but I guess this is not a definition; only a property:
-% The true distribution is also the distribution which minimizes the rate cost of the entropy model for encoding a specific latent representation $\boldvar{\hat{y}}$, i.e.,
 The true distribution for the $j$-th channel is also the encoding distribution $\hat{\boldvar{p}}_j$ with the minimum rate cost for encoding a specific latent representation $\boldvar{\hat{y}}$ using the entropy model.
 That is, the ideal encoding distribution $\boldvar{\hat{p}}^*_j$ is given by
 \begin{equation*}
   \boldvar{\hat{p}}^*_j = \argmin_{\boldvar{\hat{p}}_j} \left[
     H(\boldvar{p}_j) + D_{\mathrm{KL}}(\boldvar{p}_j \parallel \boldvar{\hat{p}}_j)
-    % \sum_i -p_{ji} \log \hat{p}_{ji}
   \right]
   \implies \boldvar{\hat{p}}^*_j = \boldvar{p}_j.
 \end{equation*}
-% where $p_{ji}$ is the probability mass represented by the $i$-th bin of the distribution $\boldvar{p}_j$.
 Unfortunately, using the true distribution $\boldvar{p}$ for encoding is infeasible, since the decoder does not have access to it.
 % In constrast to the VAE intractibility problem, we *do* know this particular true distribution. Of course, the problem setup is a bit different...
-Instead, we propose a method that generates a reconstructed approximation $\boldvar{\hat{p}}$ that targets $\boldvar{p}$, subject to a rate trade-off. % constraint.
-% measured in KL divergence, w.r.t. lambda_q trade-off...
+Instead, we propose a method that generates a reconstructed approximation $\boldvar{\hat{p}}$ that targets $\boldvar{p}$, subject to a rate trade-off.
 % D(p || phat) is the "distortion" of the distribution, measured in KL divergence.
 % H(q) is the rate cost. (Slightly imprecise notation.)
-% TODO Consider moving some of the "Loss function" section here. On the other hand, we haven't really introduced the architecture overview, and "q" yet... so maybe not.
 We discuss the specific loss function that is optimized in \cref{sec:pdf_compression/loss}.
 
 \cref{fig:pdf/pdfs} visualizes the true ($\boldvar{p}$) and reconstructed ($\boldvar{\hat{p}}$) (via our proposed method) probability distributions for a fully-factorized entropy model.
@@ -196,18 +135,12 @@ Each probability distribution is visualized as a 2D color plot, where
 \begin{enumerate}[label=(\roman*), noitemsep, topsep=0pt]
   \item the $x$-coordinate is the channel index $j$ of the latent $\boldvar{y}$,
   \item the $y$-coordinate is the bin index $i$ of the discretized probability distribution, and
-    % $\boldvar{p}_j$ or $\boldvar{\hat{p}}_j$, and % for the $j$-th channel, and
   \item the $z$-coordinate (i.e., color intensity) is the negative log-likelihood (in bits) of $(\boldvar{p}_j)_i$ or $(\boldvar{\hat{p}}_j)_i$, clipped to the range $[0, 10]$.
-  % \item the z-coordinate (i.e., color intensity) is the negative log-likelihood (in bits) of the symbol $\hat{y}$ for that channel, i.e., $-\log \boldvar{p}_{\boldvar{\hat{y}}}(\boldvar{\hat{y}})$.
 \end{enumerate}
 % We call this representation the "PDF signature".
 
-% TODO Discuss amortization further:
-% Its amortized probability distribution is
-% In the first row is a "default" dataset-optimized probability distribution, which is used by the standard "amortized" entropy bottleneck.
 
-
-% TODO(figure): Rename "default" to "amortized"?
+% TODO(figure): Rename "default" to "amortized"? Then, s/default/amortized/g.
 \begin{figure}[htbp]
   \centering
   \includegraphics[width=\linewidth]{img/pdf_compression/pdfs1.pdf}
@@ -232,18 +165,14 @@ Each probability distribution is visualized as a 2D color plot, where
   \caption[]{(continued)}
 \end{figure}
 
-% TODO s/default/amortized?
-% TODO A bit redundantly phrased...
+% TODO(review): Rephrase more compactly.
 Evidently, the default amortized dataset-optimized probability distribution is conservative and encompasses each of the image probability distributions.
 However, trying to cover all possible distributions with a single distribution leads to suboptimal compression performance since that distribution does not match each individual input distribution sufficiently well.
 In contrast, with our probability distribution compression method, the encoding distribution has adapted to the probability distributions for each image.
 Indeed, the true and reconstructed probability distributions look visually quite similar.
 This is particularly true for high-probability regions of the true distribution, which is also where accurate reconstruction is most important.
-% This is particularly true for regions of the true distribution where the probability mass is largest, which is also where accurate reconstruction is most important.
-% $\boldvar{p}$ and $\boldvar{\hat{p}}$ are quite close for high-probability symbols.
 For less probable regions, there is sometimes a larger mismatch between $\boldvar{p}$ and $\boldvar{\hat{p}}$, though this is less important, since incorrect prediction of low-probability regions has a smaller impact on the overall rate.
 This indicates that our method is capable of adapting to the input distribution well, and in a way that is cognizant of the tradeoff between rates.
-% Or rate-distortion, where distortion is actually KL div, which is also a rate.
 
 
 
@@ -272,17 +201,10 @@ The rate cost of encoding $\boldvar{q}$ is labelled $R_{q}$, and the rate cost o
 \subsection{Histogram estimation}
 \label{sec:pdf_compression/histogram}
 
-% In the entropy bottleneck, the probability distribution for a single channel is modelled by a trained cumulative logits function,
 In the entropy bottleneck, the probability distribution for a given channel is fixed, regardless of the input.
 In order to adapt this distribution to the input, we must first estimate the input distribution more accurately.
-% First, we devise a module for acquiring the target or "true" probability distribution which
 We do so by estimating the input distribution using a histogram.
-% However, a direct histogram estimation method is non-differentiable, so we
 In order to ensure differentiability backwards through the histogram module, we use the method of kernel density estimation (KDE).
-% In order to ensure differentiability backwards through the histogram module, we use a method reminiscent of kernel density estimation (KDE).
-% the method described below.
-
-% In contrast, our histogram method places a kernel function centered at each bin, which is applied to all observations.
 
 % NOTE: We use p_ji and p_i too...
 
@@ -291,7 +213,6 @@ Let $\{b_1, b_2, \ldots, b_B\}$ denote the bin centers of the $B$-bin histogram,
 In the method of kernel density estimation, which is used to estimate the probability density function from a set of observations, a kernel function is placed centered at each observed sample, and those functions are summed to create the overall density function.
 To construct the histogram, we evaluate the kernel density estimate at each $b_i$.
 Or rather, we use an equivalent formulation where we instead place a kernel function at each bin center, as visualized in \cref{fig:pdf/kernels}.
-% Technically, the horizontally flipped kernel function... but kernel functions are often symmetric.
 Then, the probability mass in the $i$-th bin can be estimated as
 \begin{equation*}
   (\operatorname{Histogram}(\boldvar{y}))_i =
@@ -299,11 +220,9 @@ Then, the probability mass in the $i$-th bin can be estimated as
   \sum_{n=1}^{N} K\left(\frac{y_n - b_i}{\Delta b}\right),
 \end{equation*}
 where $\Delta b = b_{i+1} - b_i$ is the bin width, and $K(u)$ is the kernel function, which we choose to be the triangular function
-% We choose the kernel function $K(u)$ to be a triangular function:
 \begin{equation*}
   K_{\mathrm{soft}}(u) = \max \{ 0, 1 - |u| \}.
 \end{equation*}
-% The functions used to estimate each bin of the histogram are visualized in \cref{fig:pdf/kernels}.
 Conveniently, the triangular kernel function ensures that the total mass of a single observation sums to $1$ (which is shared between its surrounding bins).
 Thus, to ensure that the total mass of the histogram under all $N$ observations sums to $1$, we may simply choose $\mathrm{Normalization} = N$.
 
@@ -325,11 +244,6 @@ We can then use the "straight-through" estimator (STE)~\cite{bengio2013estimatin
   ).
 \end{equation*}
 Thus, the hard histogram is used for the forward pass, and the differentiable soft histogram is substituted for the backward pass (i.e., backpropagation).
-% approximate the gradient of the hard histogram with the gradient of the soft histogram.
-
-% In the method of kernel density estimation (KDE), which is used to estimate the probability density function from a set of observations, a kernel function is placed centered at each observed sample, and those functions are summed to create the overall density function.
-% In contrast, our histogram method places a kernel function centered at each bin, which is applied to all observations.
-% However, the two methods produce equivalent results for symmetric kernel functions.
 
 \begin{figure}[tb]
   \centering
@@ -346,9 +260,7 @@ Thus, the hard histogram is used for the forward pass, and the differentiable so
 \subsection{Loss function}
 \label{sec:pdf_compression/loss}
 
-% In compression problems, we seek to minimize the rate of the compressed bitstreams, while also minimizing the distortion between the input and reconstructed data.
 Our model follows the variational formulation based on~\cite{balle2018variational}; further details on the construction may be found in earlier works such as~\cite{kingma2013autoencoding,balle2017endtoend,theis2017lossy}.
-% Briefly, $\boldvar{x}$ is the input image, $\boldvar{y}$ is the latent representation, and $\boldvar{\tilde{y}}$ is the quantized latent representation.
 Briefly, for a variable $\boldvar{y}$, its counterparts $\tilde{\boldvar{y}}$ and $\hat{\boldvar{y}}$ denote the noise-modelled (for training) and quantized (for inference) versions of $\boldvar{y}$, respectively.
 Furthermore, the variational encoder $q_{\boldvar{\phi}}(\boldvar{\tilde{y}}, \boldvar{\tilde{q}} \mid \boldvar{x})$ with trainable parameters $\phi$ is a probabilistic%
 \footnote{During training, the encoder is probabilistic in order to model quantization via uniform noise.}
@@ -411,45 +323,15 @@ discretized distributions,
 \end{equation*}
 Similarly, let $\boldvar{\tilde{q}}_j$ denote the $j$-th channel of $\boldvar{\tilde{q}}$.
 Then, the rate cost of $\boldvar{\tilde{q}}$ is measured by the typical calculation,
-% entropy bottleneck formulation:
-% "fully factorized" cross-entropy:
 \begin{equation*}
   R_{\boldvar{\tilde{q}}}  % (\boldvar{x})
   =
   \sum_{j=1}^{M}
-  % \sum_{i=1}^{\operatorname{length}(\boldvar{\tilde{q}}_j)}
   \sum_{i=1}^{\operatorname{length}(\boldvar{l}_j)}
-  % NOTE: Technically, p_q_j takes a vector as input.
-  % -p_{\boldvar{\tilde{q}}_j}(\tilde{q}_{ji})
-  % \log p_{\boldvar{\tilde{q}}_j}(\tilde{q}_{ji}),
-  % NOTE: The following is "correct", but very messy:
-  % -(p_{\boldvar{\tilde{q}}_j}(\boldvar{\tilde{q}}_j))_i
-  % \log (p_{\boldvar{\tilde{q}}_j}(\boldvar{\tilde{q}}_j))_i,
-  % NOTE Less messy:
   -{l_{ji}} \log {l_{ji}},
   \quad \text{where } {\boldvar{l}_j} = p_{\boldvar{\tilde{q}}_j}(\boldvar{\tilde{q}}_j).
 \end{equation*}
 
-
-% OLD TEXT
-%
-% We define the total rate cost of the compressed latent representation $\boldvar{\hat{q}}$ as $R_{\boldvar{\hat{q}}} = \E [-\log p(\boldvar{\hat{q}})]$.
-% The total rate cost for $\boldvar{\hat{y}}$ is defined as the cross-entropy between the true and reconstructed distributions,
-% $R_{\boldvar{\hat{p}}} = - \lambda_p \sum_j \boldvar{p}_j \cdot \log \boldvar{\hat{p}}_j$, where $\lambda_p$ is a trade-off parameter between ...
-% % lambda_p?
-% Then, the overall rate-distortion loss function is:
-% \begin{equation*}
-%   \mathcal{L}
-%   = R_{\boldvar{\hat{q}}}
-%   % + \lambda_p \cdot -\sum_{i,j} p_{ji} \log \hat{p}_{ji}
-%   + \lambda_p \sum_j -\boldvar{p}_j \cdot \log \boldvar{\hat{p}}_j
-%   + \lambda_x D(\boldvar{x}, \boldvar{\hat{x}}),
-% \end{equation*}
-% where $\lambda_x$ is a trade-off parameter between rate and distortion.
-%
-% The optimal choice for $\lambda$ is equal to the total number of latent pixels.
-% For the Kodak dataset~\cite{kodak_dataset}, which contains $768 \times 512$ images, and a model with $16\times$ downscale factor, we set $\lambda = 48 \, \cdot \, 32 = 1536$.
-% % To convert to bpp, it's $16 \cdot 16 = 256$.
 
 % ORIGINAL FORMULATION, which may be interesting, but the new way is good enough...
 %
@@ -581,30 +463,12 @@ Then, we may compute the derivative as follows:
       + \frac{\partial p_i}{\partial y_k} \log \hat{p}_i
     \right]
     \\
-    % &\approx \frac{-H W}{s^2} \sum_i \left[
-    %   \frac{p_i}{p_i} \frac{\partial p_i}{\partial y_k}
-    %   + \frac{\partial p_i}{\partial y_k} \log \hat{p}_i
-    % \right] \quad \text{assuming } \hat{p}_i \approx p_i \\
-    % &= \frac{-H W}{s^2} \sum_i
-    % \left[ 1 + \log \hat{p}_i \right]
-    % \frac{\partial p_i}{\partial y_k} \\
-    % &= \frac{-1}{\Delta b} \sum_i
-    %   \left[ 1 + \log \hat{p}_i \right] \cdot
-    %   H{\left( 1 - \left| \frac{y_k - b_i}{\Delta b} \right| \right)} \cdot
-    %   \left( 1 - 2 \cdot H{\left( \frac{y_k - b_i}{\Delta b} \right)} \right)
-    % \\
-    % &= \frac{-1}{\Delta b} \left(
-    %   \log \hat{p}_{\lceil{y_k - y_{\mathrm{min}}}\rceil + 1} -
-    %   \log \hat{p}_{\lfloor{y_k - y_{\mathrm{min}}}\rfloor + 1}
-    % \right).
     &\approx \frac{-H W}{s^2} \sum_i \left[
       \frac{p_i}{\hat{p}_i} \frac{\partial p_i}{\partial y_k}
       + \frac{\partial p_i}{\partial y_k} \log \hat{p}_i
     \right]
     \quad \text{assuming } \frac{\partial \hat{p}_i}{\partial y_k} \approx \frac{\partial p_i}{\partial y_k}
     \\
-    % Or, more specifically:
-    % \quad \text{assuming } \frac{\partial \hat{p}_i}{\partial p_l} \approx \delta_{il} \\
     &= \frac{-H W}{s^2} \sum_i
       \left[ \frac{p_i}{\hat{p}_i} + \log \hat{p}_i \right]
       \frac{\partial p_i}{\partial y_k}
@@ -634,18 +498,15 @@ Then, we may compute the derivative as follows:
 \end{equation}
 %
 Thus, assuming that $\hat{p}_i \approx p_i$ and $\frac{\partial \hat{p}_i}{\partial y_k} \approx \frac{\partial p_i}{\partial y_k}$, the gradient of the rate cost $R_y$ is directly proportional to the difference in code lengths of the two bins whose centers are nearest to the value $y_k$.
-% , i.e., the left and right bins.
-% Furthermore, the gradient is non-zero only for the two bins that contain the value $y_k$.
+% Notably, the gradient is non-zero only for the two bins that contain the value $y_k$.
 Intuitively, this makes sense, since the rate cost of encoding the $k$-th element is directly proportional to the linear interpolation between the code lengths of the two nearest bins:
 %
 \begin{equation*}
   R_{y_k} =
   -
   \left[
-    % (y_k - b_{\lfloor{y_k - y_{\mathrm{min}}}\rfloor + 1}) \cdot
     \alpha \cdot
     \log \hat{p}_{\lfloor{y_k - y_{\mathrm{min}}}\rfloor + 1} +
-    % (b_{\lceil{y_k - y_{\mathrm{min}}}\rceil + 1} - y_k) \cdot
     (1 - \alpha) \cdot
     \log \hat{p}_{\lceil{y_k - y_{\mathrm{min}}}\rceil + 1}
   \right],
@@ -667,7 +528,6 @@ For comparison, the standard "entropy bottleneck" represents the likelihood of a
   p(y)
   = c{\left(y + \frac{1}{2}\right)} - c{\left(y - \frac{1}{2}\right)}
   = \int_{y - \frac{1}{2}}^{y + \frac{1}{2}} f(t) \, dt,
-  % = \int_{- \frac{1}{2}}^{+ \frac{1}{2}} f(y + t) \, dt,
 \end{equation*}
 %
 where $c$ is the cumulative distribution function of the encoding distribution,
@@ -696,22 +556,24 @@ We may then compute its derivative as follows:
 Interestingly, whereas the derivative for the proposed method (under the assumption that $\hat{p}_i \approx p_i$) computed in \cref{eq:pdf_compression/optimization/dRdy_proposed} contains a difference between the "right" and "left" log-likelihoods,
 the derivative for the standard method computed in \cref{eq:pdf_compression/optimization/dRdy_standard} contains a difference between the "right" and "left" evaluations of the probability density function.
 
-% TODO criticize locality, or how if p is not p_hat, then gradient may be weird...
+% TODO(writing): criticize locality, or how if p is not p_hat, then gradient may be weird...
 % Maybe do that elsewhere
 % But is the locality the problem, or the log?!
 % Or is it just the model design: f(y) parameterization is globally influenced at once, but p_i is not.
 
-% TODO I wonder if we could "replace" the derivatives so that the network trains?
-
-% TODO Maybe the problem is related to "sample rate"? The discrete bottleneck benefits from a higher sample rate of 4.
-
+% TODO(experiment): I wonder if we could "replace" the derivatives so that the network trains?
+% TODO(experiment): Maybe the problem is related to "sample rate"? The discrete bottleneck benefits from a higher sample rate of 4.
 
 
 
-% TODO Does this need to be discussed? We didn't really use it. The sample rate trick is still interesting, though, as is the effects on training time. Actually, does it really take longer, since when we tried the default Balle factorized model with lambda=0.0067, that's also in 180+ epochs and counting... WHAT. And didn't we try discrete_entropy_bottleneck with same lambda, or was it lower?
 
 % \section{Discrete entropy bottleneck}
 % \label{sec:pdf_compression/discrete_entropy_bottleneck}
+
+% Does this need to be discussed? We didn't really use it.
+% The sample rate trick is still interesting, though, as is the effects on training time.
+% Actually, does it really take longer, since when we tried the default Balle factorized model with lambda=0.0067, that's also in 180+ epochs and counting... WHAT.
+% And didn't we try discrete_entropy_bottleneck with same lambda, or was it lower?
 
 % Essentially a "piecewise linear" entropy bottleneck
 % Finite difference derivative smoothing kernel, etc.
@@ -721,11 +583,8 @@ the derivative for the standard method computed in \cref{eq:pdf_compression/opti
 % Compare training time
 % Discrete indexing function.
 % Computational graph showing d/df, and d/dx.
-%
-% TODO(figure): Initial vs final distributions plotly (or mpl) as PDF
-% TODO(figure): Describe
-% TODO(figure): RD curves / table
-% TODO(figure): Training curves
+
+% TODO(figure): Training curves for DiscreteEntropyBottleneck
 
 
 
@@ -756,7 +615,7 @@ For all our models, we set $K = 15$ to control the kernel sizes, and $G = 8$ to 
 Furthermore, we set $(N_q, M_q) = (32, 16)$ for low-resolution models, and $(N_q, M_q) = (64, 32)$ for high-resolution models.
 The number of bins $B$ is set between $128$ and $1024$ across different models.
 We have elected to use an entropy bottleneck design for simplicity, though one can likely further improve the compression performance of the probability distribution compression architecture by using more powerful entropy modeling techniques (e.g., a scale hyperprior).
-% TODO Shouldn't all this be in "future work"?
+% TODO(review): Move this to "future work"?
 Since $\lambda_q$ is a parameter that depends on the ratio between the target and trained-upon input dimensions, it may also be advisable to train a single model which that supports $\lambda$-rate control strategies (e.g., G-VAE~\cite{cui2020gvae,cui2022asymmetric} and QVRF~\cite{tong2023qvrf}) for both latent representations $y, q$.
 However, we have not yet explored this possibility.
 % NOTE: I suppose this can be a "discussion" explaining why model may work:
@@ -778,39 +637,7 @@ However, we have not yet explored this possibility.
   \label{fig:pdf/arch-hasq}
 \end{figure}
 
-% num_bins = 128 -- 1024
-% C = 192
-% M = 16
-% N = 32
-% K = 15
-% groups = 8
-%
-% self.g_a = nn.Sequential(
-%     Reshape((C, -1)),
-%     conv1d(C, max(N, C // 2), kernel_size=5, groups=groups),
-%     Interleave(groups),
-%     nn.ReLU(inplace=True),
-%     conv1d(max(N, C // 2), N, kernel_size=K, stride=2, groups=groups),
-%     Interleave(groups),
-%     nn.ReLU(inplace=True),
-%     conv1d(N, N, kernel_size=K, stride=2, groups=groups),
-%     nn.ReLU(inplace=True),
-%     conv1d(N, M, kernel_size=K),
-% )
-%
-% self.g_s = nn.Sequential(
-%     deconv1d(M, N, kernel_size=K),
-%     nn.ReLU(inplace=True),
-%     deconv1d(N, N, kernel_size=K, stride=2, groups=groups),
-%     Interleave(groups),
-%     nn.ReLU(inplace=True),
-%     deconv1d(N, max(N, C // 2), kernel_size=K, stride=2, groups=groups),
-%     Interleave(groups),
-%     nn.ReLU(inplace=True),
-%     deconv1d(max(N, C // 2), C, kernel_size=5, groups=groups),
-%     nn.Softmax(dim=-1),  # Enforce [0, 1] range.
-%     # nn.LogSoftmax(dim=-1),
-% )
+
 
 
 \subsection{Training details}
@@ -822,22 +649,8 @@ A training batch size of $16$ was used, along with the Adam optimizer~\cite{king
 Specifically, we loaded the weights of the pretrained models from CompressAI~\cite{begaint2020compressai}, which were also trained using the same setup as above.
 We replaced the static distributions of the EntropyBottleneck module with the dynamically generated adaptive distributions from our proposed probability distribution compression module.
 Then, we froze the weights for $g_a$ and $g_s$, and trained only the weights for our probability distribution compression model (i.e., for $h_{a,q}$ and $h_{s,q}$, and the entropy model for $q$).
-% observed it becomes WORSE if unfreeze ...  TODO hypotheses...?
 Finally, we evaluated our models on the standard Kodak test dataset~\cite{kodak_dataset} containing 24 images of size $768 \times 512$.
 (Thus, we set $\lambda_q = \frac{1}{6}$ during training.)
-
-% TODO
-
-% The parameters only increased by 0.1M for low rate...
-%
-% % 3.0M → 3.1M  (low rate)
-% % 7.0M → 7.1M  (high rate)
-%
-% 3.00M → 3.05M   (low rate)
-% 7.00M → 7.10M   (high rate)
-%
-% Actual configurations used table:
-% ...
 
 
 
@@ -845,8 +658,8 @@ Finally, we evaluated our models on the standard Kodak test dataset~\cite{kodak_
 \section{Experimental results}
 \label{sec:pdf_compression/experimental_results}
 
-% All results are reported for the Kodak dataset~\cite{kodak_dataset}.
 \cref{fig:pdf/rd-curves} shows the rate-distortion (RD) curves comparing a given base model against the same model enhanced with our proposed probability distribution compression module.
+
 
 \begin{figure}[htbp]
   \centering
@@ -856,10 +669,6 @@ Finally, we evaluated our models on the standard Kodak test dataset~\cite{kodak_
   }
   \label{fig:pdf/rd-curves}
 \end{figure}
-
-% TODO(figure): [super-easy] MS-SSIM (dB) RD curves; measure average of per-sample MS-SSIM dB.
-% TODO(figure): [super-easy] RD curves for MS-SSIM, CLIC-2021 professional test dataset.
-% TODO(figure): [easy] (just subtract the base and write to another JSON) RD curves flattened w.r.t. base, like balcilar2022amortizationgap.
 
 
 In~\cref{tbl:pdf}, we compare the rate savings of our proposed method against the base model at various quality levels.
@@ -887,13 +696,12 @@ As shown, our approach achieves a 6.95\% BD-rate reduction over the base model, 
   \centering
   \caption[Rate savings for the bmshj2018-factorized model at various qualities]{%
     Potential and achieved rate savings for the bmshj2018-factorized model~\cite{balle2018variational} when equipped with our proposed distribution compression method.%
-    % across different quality levels.
   }
   \label{tbl:pdf}
   \small
   \begin{tabular}[]{ccccccc}
     \toprule
-    % TODO reorder columns?
+    % TODO(review): Reorder columns for easier comparison?
     \thead{Quality}
     & \thead{Original \\ (bpp)}
     & \thead{Potential \\ gain (bpp)}
@@ -901,7 +709,6 @@ As shown, our approach achieves a 6.95\% BD-rate reduction over the base model, 
     & \thead{Our \\ (bpp)}
     & \thead{Our gain \\ (bpp)}
     & \thead{Our \\ BD-rate} \\
-    % & & $\propto D_{\mathrm{KL}}(\boldvar{p} \parallel \boldvar{p_{\textnormal{default}}})$ & & $\propto D_{\mathrm{KL}}(\boldvar{p} \parallel \boldvar{\hat{p}})$ & \\
     \midrule
     1 & 0.122 & -0.012 & -9.45 & 0.113 & -0.009 & -7.66 \\
     2 & 0.188 & -0.016 & -8.66 & 0.175 & -0.013 & -7.13 \\
@@ -919,26 +726,25 @@ As shown, our approach achieves a 6.95\% BD-rate reduction over the base model, 
 
 In order to compute the potential savings, we first ran the base model on each image from the Kodak test dataset~\cite{kodak_dataset}, giving us a collection of true distributions $\boldvar{p}$ for each image.
 Furthermore, the base model provides a static encoding distribution $\boldvar{p_{\textnormal{default}}}$.
-% TODO Move formula to earlier section, then reference here?
+% TODO(review): Move formula to earlier section, then reference here?
 Then, we computed the potential savings (in bpp) for each image as
 $(\Delta R)_{\textnormal{max}} = \frac{HW / s^2}{HW} \sum_j D_{\mathrm{KL}}(\boldvar{p}_j \parallel (\boldvar{p_{\textnormal{default}}})_j)$.
 We then averaged these values across the entire dataset.
 
 
 
-% TODO Mention the following tables within the main body text.
+% TODO(review): Mention the following tables within the main body text.
 
 \begin{table}[htbp]
   \centering
   \caption{%
-    Comparison of rates for various models.  % equipped with probability distribution compression.
+    Comparison of rates for various models.
     Ratio is the fraction of the total rate occupied original unmodified model.
-    % Might be more natural to report in "absolute" percentage of total bitstream, rather than percentage of the given latent bitstream? (i.e., multiply)
-    % TODO Maybe Potential, Actual are better names than Gap, Gain?
+    % TODO(review): Contrary to balcilar2022amortizationgap, it might be more natural to report in "absolute" percentage of total bitstream, rather than percentage of the given latent bitstream? (i.e., multiply)
+    % TODO(review): Maybe Potential, Actual are better names than Gap, Gain?
     Gap is the maximum potential savings with perfect distribution reconstruction and zero additional transmission cost.
     Gain is the actual change in rate achieved by the given method.
     All results are reported for the Kodak dataset~\cite{kodak_dataset}.%
-    % relative to
   }
   \label{tbl:rate-gains}
   \small
@@ -956,7 +762,6 @@ We then averaged these values across the entire dataset.
     & \thead{Gain  \\ (\%)}
     \\
     \midrule
-      % NOTE: Their measured gap may differ because they may not have evaluated at the same lambda values / rate points. (TODO footnote?) Or maybe they only did the Q=1 model...!!! See if they say in the paper. Show our results for that too, for comparison. Maybe two separate tables...
     bmshj2018-factorized~\cite{balle2018variational} + \cite{balcilar2022amortizationgap} (Q=1)
       &   100 & -9.45 & -6.79 & -6.79 \\
     bmshj2018-factorized~\cite{balle2018variational} + ours (Q=1)
@@ -984,7 +789,7 @@ We then averaged these values across the entire dataset.
   \small
   \begin{tabular}[]{ccccc}
     \toprule
-    % NOTE: We can make the table more horizontally compact by swapping top to contain "Params, MACs/pixel".
+    % TODO(review): Make the table more horizontally compact?
     % \multirow{3}{*}[1ex]{\thead{Model \\ configuration \\[3pt] $(N_q, M_q, K, G, B)$}}
     \thead{Model configuration}
     & \thead{Params}
@@ -1036,25 +841,13 @@ We then averaged these values across the entire dataset.
 \end{table}
 
 
-
-
-% TODO(table): Compare against prior works (BD PSNR, Rate)
-% TODO(table): Parameter counts, MACs
 % TODO(table): Cost of distribution transmission (e.g. 0.0002 bpp or ___ bits or ___% of bitstream, for Kodak)?
 
-% TODO format closer to table from ~\cite{balcilar2022amortizationgap}?
-% e.g., "gap %" and EB's "ratio %" of total rate...?
-% Only need FACTORIZED column: ratio, gap, gain.
-% Also, include mbt2018-mean's gain...?
-% and ~\cite{balcilar2022amortizationgap}'s results too for factorized and mbt...
 
-% TODO Mention how unfreezing g_a, g_s, and entropy_bottleneck results in poorer performance than keeping them frozen.
+% TODO(writing): Mention how unfreezing g_a, g_s, and entropy_bottleneck results in poorer performance than keeping them frozen.
 
 
-
-% TODO(experiments):
-%
-% 5 layer network for even better results (note, should be config, so we can switch)
+% TODO(experiment):
 %
 % PDF+RDOQ
 %
@@ -1068,10 +861,6 @@ We then averaged these values across the entire dataset.
 \section{Conclusion}
 \label{sec:pdf_compression/conclusion}
 
-% We showcased a method with benefits:
-% ......
-% Led to .... performance
-
 In this chapter, we proposed a learned method for the compression of probability distributions.
 Our method effectively measures and compresses the encoding distributions used by the entropy bottleneck.
 The experiments we performed where we only trained the distribution compression component show that this method is effective at significantly reducing the amortization gap.
@@ -1082,27 +871,8 @@ Furthermore, our work opens up the possibility of using learned distribution com
 % Thus, the entropy bottleneck becomes adaptive.
 
 
-
-
-% Benefits:
+% TODO(discussion):
 %
-% - Can be applied to ...
-%
-% Drawbacks:
-%
-%
-%
-% My results:
-%
-% - Latent optimization via RDOQ
-% - Alternative formulation: discrete entropy bottleneck, "discrete indexing loss", "histogram" methods
-% - Entropy model optimization via adaptive probability distribution modeling
-%
-%
-%
-% - I have also improved the RDOQ process introduced in "Entropy Coding Improvement for Low-complexity Compressive Auto-encoders" with a parallelized version that gives better results.
-
-
 % Possible reasons end-to-end doesn't work well:
 %
 % - Mean/median drift (e.g. part of y distribution goes outside the support)
@@ -1111,11 +881,12 @@ Furthermore, our work opens up the possibility of using learned distribution com
 % - Number of bins insufficient.
 % - OOB needs to be in loss function.
 % - Derivatives are too "local". And don't really capture global behavior, especially once the distribution becomes bimodal.
-
+%
 % What I am doing to remedy this:
 %
 % - Compare derivatives...
 % - Ensure g_a receives derivatives, of similar magnitude or average direction. Maybe just compare first few iterations...
+% - Consider "CDF logits" style implementation, which was more successful in the past.
 
 
 
@@ -1126,7 +897,7 @@ Furthermore, our work opens up the possibility of using learned distribution com
 A few steps remain towards making probability distribution corrective methods viable parts of more advanced entropy models such as~\cite{balle2018variational,cheng2020learned,he2022elic}.
 These include the following:
 %
-% TODO trim; reword
+% TODO(writing): trim; reword
 \begin{itemize}
   \item
     The proposed adaptive entropy bottleneck needs to be formulated in such a way that it can be trained fully end-to-end.
@@ -1149,36 +920,22 @@ These include the following:
 \end{itemize}
 
 
-% Future work:
-% - Entropy bottleneck (Perhaps I can leave improvements such as figuring out why training a "pdf-adaptive" image compression model with unfrozen g_a, g_s, and entropy_botteneck results in poorer performance than keeping them frozen.)
-
-% the jointly optimized to-end
 
 
+% TODO(writing):  [Maybe in another chapter]
+% - I have also improved the RDOQ process introduced in "Entropy Coding Improvement for Low-complexity Compressive Auto-encoders" with a parallelized version that gives better results.
 
+% TODO(experiment):
+%
+%
 % RDOQ:
+%
+% Pre-tune via ~\cite{campos2019content}
 % Serial is slow, and has less ... and more "bias"...
 % Parallel with sufficient distance, or prone to divergence.
 % We chose +/-9 (I think? or radius=4?) latent region of influence (or whatever it's called)
 % Noise helps with "bias" ...
 % Use noise to choose initially, then focus on the ones that change the most.
-
-
-
-
-% MISC:
-
-% Exploring methods for modeling entropy bottleneck
-%
-% See OneNote for methods including "DiscreteEntropyBottleneck",
-% probability distribution histogram methods (KDE for triangle/gaussian), hard histogram, CDFHistogram.
-
-% Also, I wonder if there is a "regularizer" or optimizer or reparameterization that helps prevent entropy models from getting stuck in "clusters" of probability... And helps them merge/split probabilities as needed.
-% Perhaps a "coarse-to-fine" c(x) function, or one with clever normalizing flows, rather than matrix multiply 3 nodes with 4 layers or whatever.
-
-
-
-% RDOQ:
 %
 % Improve RDOQ with half the latent window or something like that?
 % Or even multiple channels optimized at once...
@@ -1187,8 +944,14 @@ These include the following:
 % Why not allow RDOQ drifting from plus minus 1 based on its present state rather than a fixed origin?
 % Maybe latent tune then random parallel RDOQ. Fast!? And heuristics, greedy?
 % Maybe latent tune and slowly unrelax the quantization model to a discrete step activation function. (WOW, IDEA.)
-
-
+%
+%
+%
+% MISC:
+%
+% Also, I wonder if there is a "regularizer" or optimizer or reparameterization that helps prevent entropy models from getting stuck in "clusters" of probability... And helps them merge/split probabilities as needed.
+% Perhaps a "coarse-to-fine" c(x) function, or one with clever normalizing flows, rather than matrix multiply 3 nodes with 4 layers or whatever.
+%
 % Might be interesting to post train various entropy models on top of factorized...
 % I wonder which would be best.
 % Or if we could make it simpler once the transform is fixed.
@@ -1197,10 +960,13 @@ These include the following:
 
 
 
+% TODO(writing): Define abbreviations. bpp, BD, RD, KL, etc.
+% TODO(writing): Consistency: R_y, or R_{\boldvar{\tilde{y}}}? Same for R_q.
 
-
-% TODO(define): bpp, BD, RD, KL, etc. Can be defined on abbreviations page? ehhh I guess.
-% TODO(math): Consistency: R_y, or R_{\boldvar{\tilde{y}}}? Same for R_q.
+% TODO(figure): [SUPER-EASY] MS-SSIM (dB) RD curves; measure average of per-sample MS-SSIM dB.
+% TODO(figure): [SUPER-EASY] RD curves for MS-SSIM, CLIC-2021 professional test dataset.
+% TODO(figure): [EASY] (just subtract the base and write to another JSON) RD curves flattened w.r.t. base, like balcilar2022amortizationgap.
 % TODO(figure): [EASY.]  Entropy bottleneck distributions (e.g. from plotly).
 % TODO(figure): [EASY.]  Per-channel rate histograms.
 % TODO(figure): Explain Entropy bottleneck, Gaussian conditional, etc. For introduction.
+% TODO(figure): Initial vs final distributions plotly (or mpl) as PDF
