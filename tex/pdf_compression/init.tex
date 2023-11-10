@@ -749,7 +749,7 @@ the derivative for the standard method computed in \cref{eq:pdf_compression/opti
 \subsection{Architecture details}
 \label{sec:pdf_compression/experimental_setup/architecture_details}
 
-As shown in \cref{fig:pdf/arch-hasq}, our $h_{a,q}$ and $h_{s,q}$ are implemented using a simple four-layer convolutional neural network.
+As shown in \cref{fig:pdf/arch-hasq}, our $h_{a,q}$ and $h_{s,q}$ are implemented using a simple five-layer convolutional neural network.
 In between each of the convolutional layers shown is a ReLU activation function, as well as a channel shuffle operation, as is done in ShuffleNet~\cite{zhang2017shufflenet}.
 There are two strides of length $2$, resulting in a total downscaling factor of $s_q = 4$.
 For all our models, we set $K = 15$ to control the kernel sizes, and $G = 8$ to control the number of channel groups.
@@ -767,8 +767,6 @@ However, we have not yet explored this possibility.
 %   To quote Geoffrey Hinton from his talk~\cite{hinton2017capsulestalk}, "the fact that [CNNs] work so well is extremely unfortunate".%
 %   % https://www.youtube.com/watch?v=rTawFwUvnLE&t=510s
 % }
-
-% TODO add another stride layer; and fix other mentions of "four-layer" to "five-layer".
 
 \begin{figure}[htbp]
   \centering
