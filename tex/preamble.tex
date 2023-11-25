@@ -92,6 +92,7 @@
 % See also:
 % https://tex.stackexchange.com/questions/309072/how-to-add-abstract-for-selected-chapters-in-my-thesis
 % https://tex.stackexchange.com/questions/377893/configure-the-abstract-at-a-chapter-of-thesis-in-the-same-page-with-chapters-ti
+%
 \newenvironment{chapabstract}{%
   % \begin{quote}%
   %   \small \rule{14cm}{1pt}%
@@ -115,6 +116,14 @@
   \vspace{1ex}%
   %   \vskip-4mm\rule{14cm}{1pt}%
   % \end{quote}%
+}
+%
+% DISABLE CHAPTER ABSTRACTS:
+%
+\renewenvironment{chapabstract}{%
+  %
+}{%
+  %
 }
 
 
