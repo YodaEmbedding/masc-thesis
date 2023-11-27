@@ -732,45 +732,47 @@ Then, we computed the potential savings (in bpp) for each image as
 $(\Delta R)_{\textnormal{max}} = \frac{HW / s^2}{HW} \sum_j D_{\mathrm{KL}}(\boldvar{p}_j \parallel (\boldvar{p_{\textnormal{default}}})_j)$.
 We then averaged these values across the entire dataset.
 
+In \cref{tbl:rate-gains}, we compare the rate savings for various base models equipped with a distribution compression method.
+% TODO(review): Maybe Potential, Actual are better names than Gap, Gain?
+"Ratio" is the fraction of the total rate occupied by the original unmodified model.
+"Gap" is the maximum potential rate gain with perfect distribution reconstruction and zero additional transmission cost.
+"Gain" is the actual rate gain achieved by the given model.
+All models are evaluated on the Kodak dataset~\cite{kodak_dataset}.
 
 
-% TODO(review): Mention the following tables within the main body text.
-
+% TODO(review): Contrary to balcilar2022amortizationgap, it might be more natural to report in "absolute" percentage of total bitstream, rather than percentage of the given latent bitstream? (i.e., multiply)
+% TODO Apply pdf compression to Gaussian conditional, too...
 \begin{table}[htbp]
   \centering
   \caption{%
-    Comparison of rates for various models.
-    Ratio is the fraction of the total rate occupied original unmodified model.
-    % TODO(review): Contrary to balcilar2022amortizationgap, it might be more natural to report in "absolute" percentage of total bitstream, rather than percentage of the given latent bitstream? (i.e., multiply)
-    % TODO(review): Maybe Potential, Actual are better names than Gap, Gain?
-    Gap is the maximum potential savings with perfect distribution reconstruction and zero additional transmission cost.
-    Gain is the actual change in rate achieved by the given method.
-    All results are reported for the Kodak dataset~\cite{kodak_dataset}.%
+    Comparison of rate savings for various models.%
   }
   \label{tbl:rate-gains}
   \small
-  \begin{tabular}[]{ccccc}
+  \begin{tabular}[]{cccccc}
     \toprule
-    \multirow{4}{*}{\thead{Model}}
+    \multirow{4}{*}{\thead{Model}}  % + Distribution compression method}}
+    & \multirow{4}{*}{\thead{Quality}}
     & \multicolumn{3}{c}{\thead{Factorized}}
     & \multicolumn{1}{c}{\thead{Total}}
     \\
-    \cmidrule(lr){2-4}
-    \cmidrule(lr){5-5}
+    \cmidrule(lr){3-5}
+    \cmidrule(lr){6-6}
+    &
     & \thead{Ratio \\ (\%)}
     & \thead{Gap   \\ (\%)}
     & \thead{Gain  \\ (\%)}
     & \thead{Gain  \\ (\%)}
     \\
     \midrule
-    bmshj2018-factorized~\cite{balle2018variational} + \cite{balcilar2022amortizationgap} (Q=1)
+    bmshj2018-factorized~\cite{balle2018variational} + Balcilar2022~\cite{balcilar2022amortizationgap} & 1
       &   100 & -9.45 & -6.79 & -6.79 \\
-    bmshj2018-factorized~\cite{balle2018variational} + ours (Q=1)
+    bmshj2018-factorized~\cite{balle2018variational} + ours & 1
       &   100 & -9.45 & -7.66 & -7.66  \\
     % TODO digitize and measure:
-    % bmshj2018-factorized~\cite{balle2018variational} + \cite{balcilar2022amortizationgap}
+      % bmshj2018-factorized~\cite{balle2018variational} + \cite{balcilar2022amortizationgap} & *
     %   &   100 & -... & -... & -... \\  % TODO
-    bmshj2018-factorized~\cite{balle2018variational} + ours
+    bmshj2018-factorized~\cite{balle2018variational} + ours & *
       &   100 & -8.33 & -6.95 & -6.95  \\
     % TODO
     % mbt2018-mean~\cite{minnen2018joint} + \cite{balcilar2022amortizationgap}
@@ -780,11 +782,18 @@ We then averaged these values across the entire dataset.
 \end{table}
 
 
+\cref{tbl:pdf/params-macs} reports the number of trainable parameters and the number of multiply-accumulate operations (MACs) per pixel for various model configurations.
+The results are calculated assuming an input image size of $768 \times 512$, and a latent representation size of $48 \times 32$.
+% The results are reported for various components including: the $h_{a,q}$ and $h_{s,q}$ transforms from our method's probability distribution compression module, and the $h_{a}$ and $h_{s}$ transforms from the scale hyperprior~\cite{balle2018variational}.
+As shown, our model requires far fewer parameters and MACs/pixel than the comparable scale hyperprior~\cite{balle2018variational} model.
+In particular, for comparable configurations, our method's $h_{a,q}$ and $h_{s,q}$ transforms require $96\text{--}97\%$ fewer parameters and $96\text{--}99\%$ fewer MACs/pixel than the scale hyperprior's $h_{a}$ and $h_{s}$ transforms.
+
+
 \begin{table}[htbp]
   \centering
   \caption{%
     Trainable parameter counts and number of multiply-accumulate operations (MACs) per pixel.
-    All results are reported for the Kodak dataset~\cite{kodak_dataset}.%
+    % All results are reported for the Kodak dataset~\cite{kodak_dataset}.%
   }
   \label{tbl:pdf/params-macs}
   \small
