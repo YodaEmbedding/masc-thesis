@@ -807,25 +807,33 @@ We then averaged these values across the entire dataset.
     \cmidrule(lr){2-3}
     \cmidrule(lr){4-5}
     %
-    % dim = 1  # For 1D.
-    % dim = 2  # For 2D.
+    % def params(in_channels, out_channels, kernel_size, groups, stride_total, dim):
+    %     return in_channels * out_channels * kernel_size**dim / groups
     %
-    % def params(in_channels, out_channels, kernel_size, stride_total, groups):
-    %     return in_channels * out_channels * kernel_size ** dim / groups
+    % def macs(in_channels, out_channels, kernel_size, groups, stride_total, dim):
+    %     return (
+    %         in_channels * out_channels * kernel_size**dim / groups / stride_total**dim
+    %     )
     %
-    % def macs(in_channels, out_channels, kernel_size, stride_total, groups):
-    %     return in_channels * out_channels * kernel_size ** dim / groups / stride_total ** dim
+    % def compute(M_y, N_q, M_q, K, G, B, dim):
+    %     fs = {"params": params, "macs": macs}
+    %     results = {}
+    %     for key, f in fs.items():
+    %         results[key] = sum(
+    %             [
+    %                 f(M_y, M_y // 2, 5, G, 1, dim),
+    %                 f(M_y // 2, N_q, K, G, 2, dim),
+    %                 f(N_q, N_q, K, G, 4, dim),
+    %                 f(N_q, N_q, K, G, 8, dim),
+    %                 f(N_q, M_q, K, 1, 8, dim),
+    %             ]
+    %         ) * (B / (768 * 512) if key == "macs" else 1)
+    %     return results
     %
-    % f = params
-    % sum([
-    %     f(M_y, M_y // 2, 5, 1, 8),
-    %     f(M_y // 2, N_q, 15, 2, 8),
-    %     f(N_q, N_q, 15, 4, 8),
-    %     f(N_q, N_q, 15, 8, 8),
-    %     f(N_q, M_q, 15, 8, 1),
-    % ]) * (B / (768 * 512) if f == macs else 1)
+    % print(compute(M_y=192, N_q=32, M_q=16, K=15, G=8, B=256, dim=1))
+    % print(compute(M_y=320, N_q=64, M_q=32, K=15, G=8, B=1024, dim=1))
     %
-    Ours $(192, 32, 16, 15, 8, 256)$  & 0.316M & 10 & 0.316M & 10 \\
+    Ours $(192, 32, 16, 15, 8, 256)$  & 0.029M & 10 & 0.029M & 10 \\
     Ours $(320, 64, 32, 15, 8, 1024)$ & 0.097M & 126 & 0.097M & 126 \\[3pt]
     \midrule
     \thead{$(N, M)$}
