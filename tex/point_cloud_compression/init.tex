@@ -151,14 +151,14 @@ This approach provides a baseline for comparison with our proposed codec.
 
 \begin{figure}[tbp]
   \centering
-  \begin{subfigure}[b]{0.68\linewidth}
+  \begin{subfigure}[b]{0.53\linewidth}
     \centering
     \includegraphics[width=\linewidth]{img/point_cloud_compression/arch/input-compression.pdf}
     \caption{input compression}
     \label{fig:arch-comparison/input-compression}
   \end{subfigure}%
   \vspace{1.5\baselineskip}
-  \begin{subfigure}[b]{0.8\linewidth}
+  \begin{subfigure}[b]{0.62\linewidth}
     \centering
     \includegraphics[width=\linewidth]{img/point_cloud_compression/arch/proposed.pdf}
     \caption{proposed}
@@ -181,13 +181,6 @@ where $I(\cdot;\cdot)$ is the mutual information~\cite{Cover_Thomas_2006}, $p(\b
 We can think of $p(\boldvar{\hat{y}} \mid \boldvar{x})$ as feature extraction followed by quantization.
 Hence, $\boldvar{\hat{y}}$ is fully determined whenever $\boldvar{x}$ is given, so $H(\boldvar{\hat{y}} \mid \boldvar{x}) = 0$, where $H(\cdot \mid \cdot)$ is the conditional entropy~\cite{Cover_Thomas_2006}.
 Therefore, $I(\boldvar{x}; \boldvar{\hat{y}}) = H(\boldvar{\hat{y}}) - H(\boldvar{\hat{y}} \mid \boldvar{x}) = H(\boldvar{\hat{y}})$.
-
-\begin{figure*}[tbp]
-  \centering
-  \includegraphics[width=0.7\linewidth]{img/point_cloud_compression/arch/proposed-full.pdf}
-  \caption{Proposed codec architecture.}
-  \label{fig:arch-proposed-full}
-\end{figure*}
 
 Furthermore, since decreasing $-\beta\cdot I(\boldvar{\hat{y}} ; \boldvar{\hat{t}})$ would improve the accuracy of the task, we can use $\lambda \cdot D(\boldvar{t},\boldvar{\hat{t}})$ as a proxy for $-\beta\cdot I(\boldvar{\hat{y}} ; \boldvar{\hat{t}})$, where $\boldvar{t}$ is the ground-truth label, $\boldvar{\hat{t}}$ is the label produced using the compressed latent representation, and $D(\boldvar{t},\boldvar{\hat{t}})$ is a distortion measure.
 Therefore, in our case, the IB~\eqref{eq:IB} becomes:
@@ -214,6 +207,13 @@ The input $\boldvar{x}$ is fed into a sequence of encoder blocks.
 Each encoder block consists of a convolutional layer, a batch normalization layer, and a ReLU activation.
 As described in~\cite{qi2016pointnet}, the early encoder blocks must be applied to each input point independently and identically, in order to avoid learning input permutation-specific dependencies.
 Therefore, we use pointwise convolutional layers with kernel size 1, which are exactly equivalent to the "shared MLP" described in~\cite{qi2016pointnet}.
+
+\begin{figure*}[tb]
+  \centering
+  \includegraphics[width=1.0\linewidth]{img/point_cloud_compression/arch/proposed-full.pdf}
+  \caption{Proposed codec architecture.}
+  \label{fig:arch-proposed-full}
+\end{figure*}
 
 Following the sequence of encoder blocks, a max pooling operation is applied along the point dimension to generate an input permutation-invariant feature vector of length $N$.
 The resulting feature vector is then multiplied element-wise by a trainable gain vector $v \in \mathbb{R}^{N}$, which is initialized to $[1, 1, \ldots, 1]$ before training.
@@ -384,10 +384,11 @@ Since our compression models were all trained \emph{without} the input/feature t
 In \cref{tbl:measurements}, we list the peak accuracies attained by each codec, as well as the Bjøntegaard-Delta (BD)~\cite{bjontegaard2001calculation} improvements in rates and accuracies relative to the reference input compression codec.
 
 
+\newcommand{\showfigpccrateaccuracy}{%
 \begin{figure*}[htbp]
   \centering
   % \newcommand{\subfigurehspace}{.33\linewidth}
-  \newcommand{\subfigurehspace}{.25\linewidth}
+  \newcommand{\subfigurehspace}{.5\linewidth}
   \begin{subfigure}[b]{\subfigurehspace}
     \includegraphics[width=\linewidth]{img/point_cloud_compression/rate_accuracy/modelnet40_full.pdf}
     \caption{``full'' codec}
@@ -417,21 +418,23 @@ In \cref{tbl:measurements}, we list the peak accuracies attained by each codec, 
   \caption{Rate-accuracy curves evaluated on the ModelNet40 test set.}
   \label{fig:rate-accuracy}
 \end{figure*}
+}
 
 
+\newcommand{\showtablepccmeasurements}{%
 \begin{table}[t]
   \centering
   \begin{threeparttable}
   \caption{BD metrics and max attainable accuracies per codec}
   \label{tbl:measurements}
   % \tiny
-  \scriptsize
+  % \scriptsize
   % \footnotesize
-  % \small
+  \small
   % \normalsize
   %
-  \newcommand{\tablesubheaderstyle}[1]{{\underline{#1}}}
-  \newcommand{\tbleq}[1]{{\normalsize \scalebox{0.7}{{#1}}}}
+  \newcommand{\tablesubheaderstyle}[1]{{\underline{##1}}}
+  \newcommand{\tbleq}[1]{{\normalsize \scalebox{0.8}{{##1}}}}
   \setlength{\tablesepskip}{-0.8\normalbaselineskip}
   \setlength{\tablesubheaderskip}{0.6\normalbaselineskip}
   %
@@ -498,6 +501,7 @@ In \cref{tbl:measurements}, we list the peak accuracies attained by each codec, 
   \end{tablenotes}
   \end{threeparttable}
 \end{table}
+}
 
 
 % NOTE: The ModelNet40 TEST set isn't uniformly distributed; some classes have half the number of models as other classes.
@@ -514,6 +518,10 @@ The input compression codec is the worst performing codec, and attains the lower
 In \cref{fig:rec}, we show various point clouds that have been reconstructed from the bitstreams generated by our proposed codecs.
 For each codec, we include samples reconstructed from bitstreams compressed at different rates.
 Above each reconstructed point cloud, we show the corresponding reference point cloud, with critical points marked in red.
+
+
+\showfigpccrateaccuracy{}
+\showtablepccmeasurements{}
 
 
 % Note that the D1-PSNRs computed using MPEG's pc_error tool are fairly unhelpful here...
@@ -654,6 +662,9 @@ Above each reconstructed point cloud, we show the corresponding reference point 
   }
   \label{fig:rec}
 \end{figure}
+
+
+\FloatBarrier
 
 
 
