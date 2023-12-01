@@ -2,6 +2,9 @@
 \label{ch:pdf_compression}
 
 
+% TODO notation: R_{*} vs R_{\boldvar{\hat{*}}}
+
+
 \begin{chapabstract}
   The entropy bottleneck introduced by Ballé~\emph{et~al.}~\cite{balle2018variational} is a common component used in many learned compression models.
   It encodes a transformed latent representation using a static distribution whose parameters are learned during training.
@@ -43,7 +46,7 @@ For example, Ballé~\emph{et~al.}~\cite{balle2018variational} model a latent rep
     That is, the elements ${y}_{c,1}, {y}_{c,2}, \ldots, {y}_{c,H W}$ within the $c$-th channel are assumed to be drawn from independent and identically distributed (i.i.d.) random variables with the probability distribution ${p}_c(y)$.
   \item
     A \emph{Gaussian conditional}.
-    For each element ${y}_{i}$, the parameters ${\mu}_{i}$ and ${\sigma}_{i}$ of its encoding distribution are computed, conditioned on the latent representation $\boldvar{z} = h_a(\boldvar{y})$.
+    For each element ${y}_{i}$, the parameters ${\mu}_{i}$ and ${\sigma}_{i}$ of its encoding distribution are computed, conditioned on the latent representation $\boldvar{\hat{z}} = \operatorname{Quantize}[h_a(\boldvar{y})]$.
     In some cases, the modeling distribution is a mixture of $K$ Gaussians --- known as a Gaussian mixture model (GMM) --- with parameters ${\mu}_{i}^{(k)}$ and ${\sigma}_{i}^{(k)}$ for each Gaussian, alongside an affine combination of weights ${w}_{i}^{(K)}$ that satisfy the constraint $\sum_k {w}_{i}^{(k)} = 1$.
 \end{enumerate}
 Both of these have their advantages and disadvantages.
@@ -648,7 +651,7 @@ However, we have not yet explored this possibility.
 Our models are trained on $256 \times 256$ image patches from the Vimeo-90K triplet dataset~\cite{xue2019video}.
 A training batch size of $16$ was used, along with the Adam optimizer~\cite{kingma2014adam} with an initial learning rate of $10^{-4}$ that was decayed by a factor of $0.1$ whenever the validation loss plateaued.
 Specifically, we loaded the weights of the pretrained models from CompressAI~\cite{begaint2020compressai}, which were also trained using the same setup as above.
-We replaced the static distributions of the EntropyBottleneck module with the dynamically generated adaptive distributions from our proposed probability distribution compression module.
+We replaced the static distributions of the \texttt{EntropyBottleneck} module with the dynamically generated adaptive distributions from our proposed probability distribution compression module.
 Then, we froze the weights for $g_a$ and $g_s$, and trained only the weights for our probability distribution compression model (i.e., for $h_{a,q}$ and $h_{s,q}$, and the entropy model for $q$).
 Finally, we evaluated our models on the standard Kodak test dataset~\cite{kodak_dataset} containing 24 images of size $768 \times 512$.
 (Thus, we set $\lambda_q = \frac{1}{6}$ during training.)
