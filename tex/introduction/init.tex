@@ -60,25 +60,44 @@ To compress a sequence of weather observations $X_1, X_2, \ldots, X_n$, we can u
 %   \end{cases}
 % \end{equation*}
 % "☀️ 🌧️ ⛅ ☀ ☀️ 🌧️ ⛅ ☀"
-Then, a sequence of weather observations such as "\texttt{SRCSSRCS}" can be represented more compactly as the \emph{encoded} binary string "\texttt{010110010110}".
-% TODO
-% However, a more sophisticated compression method, or probability model
-% that cloudy days often follow rainy days.
-% If the ...
-% does not match
-% then the "compressed" result will be inefficient
-% For instance,
-% ...
+Then, a sequence of weather observations such as the 64-bit ASCII string "\texttt{SRCSSRCS}" can be represented more compactly as the \emph{encoded} 12-bit binary string "\texttt{010110010110}".
+
+% TODO(review): This could be written more clearly, or perhaps even with a figure...
+% $x \in \mathcal{X}$
+Notably, for any given input $x \in \{\texttt{S}, \texttt{R}, \texttt{C}\}$, the length in bits of its encoded representation is equal to $-\log_2 P(X = x)$.
+That is,
+$-\log_2 \frac{1}{2} = 1 \text{ bit}$ for \texttt{S},
+$-\log_2 \frac{1}{4} = 2 \text{ bits}$ for \texttt{R},
+and $-\log_2 \frac{1}{4} = 2 \text{ bits}$ for \texttt{C}.
+% On average, this minimizes the number of bits required to represent a sequence of weather observations.
+Thus, the if $X_1, X_2, \ldots, X_n$ are truly independently and identically distributed (i.i.d.), then this codebook is the optimal codebook.
+
+However, many raw sources studied in compression are not i.i.d.
+In fact, there are often patterns or correlations between consecutive elements.
+% For instance, in the weather example, it is more likely that the weather tomorrow will be \texttt{R} if it was \texttt{C} today.
+For instance, in the weather example, it is more likely that the weather will be \texttt{R} on a given day if it was \texttt{C} on the previous day.
+Then, the probability distribution used for encoding should be reevaluated to a more realistic prediction, e.g. $(\frac{1}{4}, \frac{1}{2}, \frac{1}{4})$.
+The codebook must then also be updated to dynamically match this new encoding distribution:
+\begin{align*}
+  \texttt{S} &\rightarrow \texttt{10}, \\
+  \texttt{R} &\rightarrow \texttt{0}, \\
+  \texttt{C} &\rightarrow \texttt{11}.
+\end{align*}
+This is the optimal codebook for the new encoding distribution.
+It should be used instead of the general codebook whenever the previous weather observation is \texttt{C}.
+However, we can usually compress further by determining a more accurate encoding distribution that predicts the next observation more accurately.
+
+% adapt to changing weather, seasons, or to changing climate patterns
+More sophisticated probability modeling might also take into account the weather from the past several days, or from the same day in previous years.
+A good model might blend in other related sources of information such as past and current humidity, temperature, and wind speed.
+It might also analyze such information on multiple scales: locally within the city, within the province, or within the continent.
+Such probability modeling is the work of a meteorologist... and also a data compression researcher!
+In data compression, this process of determining the encoding distribution on-the-fly based on previous information is known as \emph{context modeling}; and more generally, for any way of determining the encoding distribution, as \emph{entropy modeling}.
+
+% If the ... does not match ..., then the "compressed" result will be inefficient.
 % Good compression requires accurate modeling of the data source.
-% probability models.
-% adapt probability model dynamically
-% adapt to changing weather
-% seasons
-% or to changing climate patterns
-% or to other patterns (e.g. rainy days often follow cloudy days)
-%
-% More generally, any encoding probability distribution can be
-% perfectly coded using an arithmetic coder
+% More generally, any encoding probability distribution can be perfectly coded using an arithmetic coder.
+
 
 % Reader should now appreciate probability distribution-based modeling.
 
