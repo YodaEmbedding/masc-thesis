@@ -1,12 +1,42 @@
 \chapter{Conclusion}
 
-\IfFileExists{tex/conclusion/wip.tex}{%
-  \input{tex/conclusion/wip.tex}%
-}{%
-  Under construction.
-  % \typeout{Warning: Missing file tex/conclusion/wip.tex}%
-}
+In this thesis, we have explored various aspects of learned compression for images, point clouds, and video.
 
-% \input{tex/conclusion/thesis_summary.tex}
-%
-% \input{tex/conclusion/future_work.tex}
+Our first contribution made in \cref{ch:pdf_compression}, "\nameref{ch:pdf_compression}", proposes a simple low-complexity and yet effective method for dynamically adapting the entropy bottleneck to the input distribution.
+The static entropy bottleneck is a common component in many SOTA learned compression models.
+However, its proportional bitrate usage is minimal in image compression models, in comparison to the Gaussian conditional component --- though, this is likely because of its non-adaptive nature!
+Thus, replacing the static entropy bottleneck with an alternative adaptive entropy bottleneck may lead to a small but consistent boost in performance.
+It should be noted that a correct plug-and-play end-to-end training implementation of our dynamic entropy model is still under development.
+
+Nonetheless, when trained on a pretrained model with frozen transform weights, our dynamically adaptive entropy bottleneck showed gains of -6.95\% in BD-rate over a static entropy bottleneck.
+Thus, our method provides a low-complexity mechanism that can be used to aid in building practical, efficient models for the real world.
+Currently, many SOTA models have been largely focused on RD performance.
+While the exceptional results on the frontier of RD performance achievement are exciting, it is important to step back and think about how to make learned compression a feasible option for practical use.
+Our proposed method takes a step in that direction.
+It is quite possible that a practical standardized learned codec might someday make use of our highly efficient low-cost solution in lieu of a heavier alternative.
+
+Our work presented in \cref{ch:point_cloud_compression}, "\nameref{ch:point_cloud_compression}", opens the way for point cloud-oriented machine-task oriented codecs.
+We showed how a simple Point Net-based codec focused on the machine task can achieve significantly better results than a more conventional "compress, transmit, decompress, machine task model" approach.
+Furthermore, our "micro" encoder operates at an ultra-low complexity of 48 MACs/pt, and yet achieves a far better accuracy for any given bitrate than the conventional approach.
+
+Interestingly, our codec comes close to the theoretical limits of compression for 40 evenly-distributed class labels.
+This can in part be attributed to the inherently low entropy of small point clouds.
+(e.g. SOTA codecs compress to \~1 bit/pt with acceptable amounts of distortion.)
+But another dominant factor is that arguably, the ModelNet40 dataset contains fairly easy-to-classify CAD object point clouds that are noise-free, isolated, and well-defined from all angles.
+In comparison, real world point clouds are much noisier, contain a surrounding environment, and often only have measurements visible from a particular angle.
+This is evident in the case of LIDAR-generated point clouds.
+It is harder to isolate the relevant information in such a setting.
+Thus, real-world scenarios present a greater challenge for machine-task oriented codecs.
+Nonetheless, we believe that with some effort, machine-task codecs can demonstrate their utility in more complex settings.
+
+In \cref{ch:video_latent_space_motion_analysis}, "\nameref{ch:video_latent_space_motion_analysis}", we showed that in convolutional-based models, motion within the input domain leads to predictable motion within the latent domain.
+Furthermore, we quantified how predictable the next "latent frame" is in terms of the amount of residual error that is produced by warping the "reference latent frame".
+This is akin to video coding via p-frames, except in the latent domain.
+We found that the residual NRMSE is kept under 0.04 for randomly tested "reasonably expected" affine transformations/warps.
+(For reference, a NRMSE of 0.04 very roughly corresponds to 27 dB PSNR for conventional image coding.)
+
+Our results suggest that learned video compression approaches that rely upon warping of the latent space are feasible.
+Methods such as Scale-Space Flow~\cite{agustsson2020scalespaceflow} rely upon transforming the predicted frame back into the input domain before applying motion-based warping, and then computing the residual frame, and then transforming the residual back into a latent domain for encoding.
+Potentially, this costly and possibly even suboptimal step of converting back-and-forth between domains can be eliminated by simply warping the latent space directly, as our study indicates may be viable.
+
+All in all, we believe that our work has contributed to the new and promising field of learned compression.
