@@ -153,6 +153,24 @@
     {}}
 
 
+% Format me, and joint first authors
+% https://tex.stackexchange.com/questions/73136/make-specific-author-bold-using-biblatex/304968#304968
+% https://tex.stackexchange.com/questions/468623/indicating-joint-first-authorship-through-special-markup-in-biblatex-biber
+% https://bastian.rieck.me/blog/posts/2021/publication_lists/
+\renewcommand*{\mkbibcompletename}[1]{%
+  \ifitemannotation{me}
+    {\textbf{#1}}
+    {#1}%
+  \ifitemannotation{first}
+    % {\kern-0.05em\textsuperscript{$\dagger$}}
+    {\textsuperscript{\textasteriskcentered}}
+    {}%
+  \ifitemannotation{last}
+    {\textsuperscript{$\ddagger$}}
+    {}%
+}
+
+
 % % TikZ libraries
 % \usetikzlibrary{
 %   external,
