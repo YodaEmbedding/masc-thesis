@@ -171,6 +171,23 @@
 }
 
 
+% \fullciteall command to cite all names
+% https://tex.stackexchange.com/questions/126226/how-do-i-instruct-fullcite-to-use-maxbibnames-rather-than-maxcitenames
+\DeclareCiteCommand{\fullciteall}
+  % {\defcounter{maxnames}{\blx@maxbibnames}%
+  {%
+    \defcounter{maxnames}{99}%
+    \usebibmacro{prenote}%
+  }
+  {%
+    \usedriver
+    {\DeclareNameAlias{sortname}{default}}
+    {\thefield{entrytype}}%
+  }
+  {\multicitedelim}
+  {\usebibmacro{postnote}}
+
+
 % % TikZ libraries
 % \usetikzlibrary{
 %   external,
