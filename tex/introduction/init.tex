@@ -132,27 +132,18 @@ Extending this technique, scalable multi-task codecs such as~\cite{choi2021laten
 A simple compression architecture used by both traditional and learned compression methods alike is shown in \cref{fig:intro/arch-comparison/factorized}.
 This architecture consists of several components.
 \cref{tbl:intro/codec_components} lists some common choices for the components in this architecture.
-In this architecture, the input $\boldvar{x}$ goes through a transform $g_a$ to generate an intermediate representation $y$, which is quantized to $\boldvar{\hat{y}}$.
-Then, $\boldvar{\hat{y}}$ is losslessly entropy coded to generate a transmittable bitstream from which $\boldvar{\hat{y}}$ can be perfectly reconstructed.
-(at the decoder side.)
-Finally, $\boldvar{\hat{y}}$ is fed into a synthesis transform $g_s$ which reconstructs an approximation of $\boldvar{x}$, which is labeled $\boldvar{\hat{x}}$.
-The length of the bitstream is known as the rate cost $R_{\boldvar{\hat{y}}}$, which in the task of compression, we seek to minimize.
-We also seek to minimize the distortion $D(\boldvar{x}, \boldvar{\hat{x}})$, which is typically the mean squared error (MSE) between $\boldvar{x}$ and $\boldvar{\hat{x}}$.
-To balance these two competing goals, it is common to introduce a Lagrangian trade-off hyperparameter $\lambda$, so that the quantity sought to be minimized is $L = R_{\boldvar{\hat{y}}} + \lambda \, D(\boldvar{x}, \boldvar{\hat{x}})$.
-
-% lossy, lossless: (lossy has non-zero D) (lossless has D = 0)
-
 
 \begin{figure}[htbp]
   \centering
-  \begin{subfigure}[b]{1.0\linewidth}
+  \begin{subfigure}{0.8\linewidth}
     \centering
     \includegraphics[width=\linewidth]{img/introduction/arch-overview-factorized.pdf}
     \caption{simple}
     \label{fig:intro/arch-comparison/factorized}
   \end{subfigure}%
-  \vspace{1.5\baselineskip}
-  \begin{subfigure}[b]{1.0\linewidth}
+  \par
+  % \vspace{1.5\baselineskip}
+  \begin{subfigure}{0.8\linewidth}
     \centering
     \includegraphics[width=\linewidth]{img/introduction/arch-overview-hyperprior.pdf}
     \caption{hyperprior}
@@ -205,11 +196,13 @@ To balance these two competing goals, it is common to introduce a Lagrangian tra
 \end{table}
 
 
-% TODO(table): parameters and MACs/pixel by model. Breakdown ga, gs, ha, hs, EP, CM, total.
-
+In this architecture, the input $\boldvar{x}$ goes through a transform $g_a$ to generate an intermediate representation $y$, which is quantized to $\boldvar{\hat{y}}$.
+Then, $\boldvar{\hat{y}}$ is losslessly entropy coded to generate a transmittable bitstream from which $\boldvar{\hat{y}}$ can be perfectly reconstructed.
+(at the decoder side.)
+Finally, $\boldvar{\hat{y}}$ is fed into a synthesis transform $g_s$ which reconstructs an approximation of $\boldvar{x}$, which is labeled $\boldvar{\hat{x}}$.
 
 Each of the components of the standard compression architecture are described in further detail below:
-
+%
 \begin{itemize}
   \item \textbf{Analysis transform} ($g_a$):
     The input first is transformed by the $g_a$ transform into a transformed representation $\boldvar{y}$.
@@ -245,6 +238,13 @@ Each of the components of the standard compression architecture are described in
     For instance, the bmshj2018-factorized model's $g_s$ transform contains 4 upsampling transposed convolutional layers interleaved with IGDN nonlinear activations, totaling 1.5M to 3.5M parameters.
 \end{itemize}
 
+The length of the bitstream is known as the rate cost $R_{\boldvar{\hat{y}}}$, which we seek to minimize. % in the task of compression
+We also seek to minimize the distortion $D(\boldvar{x}, \boldvar{\hat{x}})$, which is typically the mean squared error (MSE) between $\boldvar{x}$ and $\boldvar{\hat{x}}$.
+To balance these two competing goals, it is common to introduce a Lagrangian trade-off hyperparameter $\lambda$, so that the quantity sought to be minimized is $L = R_{\boldvar{\hat{y}}} + \lambda \, D(\boldvar{x}, \boldvar{\hat{x}})$.
+% lossy, lossless: (lossy has non-zero D) (lossless has D = 0)
+
+
+% TODO(table): parameters and MACs/pixel by model. Breakdown ga, gs, ha, hs, EP, CM, total.
 
 % bmshj2018-factorized parameters and MACs/pixel:
 %
@@ -343,8 +343,8 @@ Some popular choices for entropy models include:
     Here, the latent representation $\boldvar{\hat{z}} = \operatorname{Quantize}[h_a(\boldvar{y})]$ is computed by the analysis transform $h_a$, and then encoded using an entropy bottleneck and transmitted as \emph{side information};
     and $h_s$ is a synthesis transform.
     This architecture is visualized in \cref{fig:intro/arch-comparison/hyperprior}.
-    Cheng~\emph{et~al.}~\cite{cheng2020learned} define $f_i$ as a mixture of $K$ Gaussians --- known as a Gaussian mixture model (GMM) --- with parameters ${\mu}_{i}^{(k)}$ and ${\sigma}_{i}^{(k)}$ for each Gaussian, alongside an affine combination of weights ${w}_{i}^{(K)}$ that satisfy the constraint $\sum_k {w}_{i}^{(k)} = 1$.
-    That is,
+    Cheng~\emph{et~al.}~\cite{cheng2020learned} define $f_i$ as a mixture of $K$ Gaussians --- known as a Gaussian mixture model (GMM) --- with parameters ${\mu}_{i}^{(k)}$ and ${\sigma}_{i}^{(k)}$ for each Gaussian, alongside an affine combination of weights ${w}_{i}^{(1)}, \ldots, {w}_{i}^{(K)}$ that satisfy the constraint $\sum_k {w}_{i}^{(k)} = 1$.
+    A GMM encoding distribution is thus defined as
     $f_i(y) = \sum_{k=1}^{K} {w}_{i}^{(k)} \, \mathcal{N}(y; {\mu}_{i}^{(k)}, ({\sigma}_{i}^{(k)})^2)$.
 \end{itemize}
 
