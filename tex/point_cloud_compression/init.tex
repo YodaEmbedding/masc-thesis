@@ -76,7 +76,7 @@ Existing codecs for point clouds are designed to reconstruct point clouds intend
 This means that a significant amount of bits is wasted on encoding information that is not strictly relevant to machine analysis.
 By partially processing the point cloud before compression, our codec is able to achieve significantly better compression performance, without compromising task accuracy.
 
-In this paper, we present our task-specialized codec architecture in full and lightweight configurations.
+In this chapter, we present our task-specialized codec architecture in full and lightweight configurations.
 We evaluate its rate-accuracy (RA) performance on the ModelNet40 dataset~\cite{wu20143d}.
 We also investigate how the number of input points (and thus reduced computation) affects the RA performance of our proposed codec.
 Furthermore, we compare our proposed codec's performance against alternative non-specialized methods.
@@ -713,7 +713,7 @@ This suggests part of the reason for why our proposed codec achieves such big ga
 \section{Conclusion}
 \label{sec:conclusion}
 
-In this paper, we proposed a new codec for point cloud classification.
+In this chapter, we proposed a new codec for point cloud classification.
 Our experiments demonstrated that the "full" configuration of the codec achieves stellar rate-accuracy performance, far exceeding the performance of alternative methods.
 We also presented "lite" and "micro" configurations of the codec whose encoders consume minimal computational resources, and yet achieve comparable gains in rate-accuracy performance.
 

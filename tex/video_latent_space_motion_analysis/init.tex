@@ -87,8 +87,8 @@ These findings suggest that methods for motion estimation, compensation, and ana
     % \vspace{-1.0\baselineskip}
 \end{figure}
 
-The paper is organized as follows. In \cref{sec:video_latent_space_motion_analysis/motion_analysis}, we analyze the actions of typical operations found in deep convolutional neural networks on optical flow in the input signal, and show that these operations tend to preserve the optical flow, at least approximately, with an appropriate scale. In \cref{sec:video_latent_space_motion_analysis/experiments} we provide empirical support for the theoretical analysis from \cref{sec:video_latent_space_motion_analysis/motion_analysis}. %using canonical motions such as translation, rotation, and scale change.
-Finally, \cref{sec:video_latent_space_motion_analysis/conclusions} concludes the paper.
+This chapter is organized as follows. In \cref{sec:video_latent_space_motion_analysis/motion_analysis}, we analyze the actions of typical operations found in deep convolutional neural networks on optical flow in the input signal, and show that these operations tend to preserve the optical flow, at least approximately, with an appropriate scale. In \cref{sec:video_latent_space_motion_analysis/experiments} we provide empirical support for the theoretical analysis from \cref{sec:video_latent_space_motion_analysis/motion_analysis}. %using canonical motions such as translation, rotation, and scale change.
+% Finally, \cref{sec:video_latent_space_motion_analysis/conclusions} concludes the chapter.
 
 
 % \FloatBarrier
@@ -117,7 +117,7 @@ Finally, \cref{sec:video_latent_space_motion_analysis/conclusions} concludes the
 \section{Latent space motion analysis}
 \label{sec:video_latent_space_motion_analysis/motion_analysis}
 
-The basic problem studied in this paper is illustrated in \cref{fig:video_latent_space_motion_analysis/overview}. Consider two images (video frames) input to the edge sub-model of a CI system. It is common to represent their relationship via a motion model. The question we seek to answer here is, ``what is the relationship between the corresponding feature tensors produced by the edge sub-model?'' To answer this question, we will look at the processing pipeline between the input image and a given channel of a feature tensor. In most deep models for computer vision applications, this processing pipeline consists of a sequence of basic operations: convolutions, pointwise nonlinearities, and pooling.  We will show that each of these operations tends to preserve motion, at least approximately, in a certain sense, and from this we will conclude that (approximate) input motion may be observed in individual channels of a feature tensor.
+The basic problem studied in this chapter is illustrated in \cref{fig:video_latent_space_motion_analysis/overview}. Consider two images (video frames) input to the edge sub-model of a CI system. It is common to represent their relationship via a motion model. The question we seek to answer here is, ``what is the relationship between the corresponding feature tensors produced by the edge sub-model?'' To answer this question, we will look at the processing pipeline between the input image and a given channel of a feature tensor. In most deep models for computer vision applications, this processing pipeline consists of a sequence of basic operations: convolutions, pointwise nonlinearities, and pooling.  We will show that each of these operations tends to preserve motion, at least approximately, in a certain sense, and from this we will conclude that (approximate) input motion may be observed in individual channels of a feature tensor.
 
 \begin{figure}[htbp]
     \centering
@@ -339,6 +339,6 @@ so the PSNR range of 27--41 dB corresponds to the NRMSE range of 0.009--0.044. T
 
 \section{Conclusions}
 \label{sec:video_latent_space_motion_analysis/conclusions}
-Using the concept of optical flow, in this paper we analyzed motion in the latent space of a deep model induced by the motion in the input space, and showed that motion tends to be approximately preserved in the channels of intermediate feature tensors. These findings suggest that motion estimation, compensation, and analysis methods developed for conventional video signals should be able to provide a good starting point for latent-space motion processing, such as motion-compensated prediction and compression, tracking, action recognition, and other applications.
+Using the concept of optical flow, in this chapter we analyzed motion in the latent space of a deep model induced by the motion in the input space, and showed that motion tends to be approximately preserved in the channels of intermediate feature tensors. These findings suggest that motion estimation, compensation, and analysis methods developed for conventional video signals should be able to provide a good starting point for latent-space motion processing, such as motion-compensated prediction and compression, tracking, action recognition, and other applications.
 %Another intriguing prospect, which requires further analysis, is the possibility of inferring input-space motion from latent-space features.
 
