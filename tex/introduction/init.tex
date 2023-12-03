@@ -85,8 +85,8 @@ The codebook must then also be updated to dynamically match this new encoding di
 \end{align*}
 This is the optimal codebook for the new encoding distribution.
 It should be used instead of the general codebook whenever the previous weather observation is \texttt{C}.
-However, we can usually compress further by determining a more accurate encoding distribution that predicts the next observation more accurately.
 
+We can compress even further by determining a more accurate encoding distribution that predicts the next observation more accurately.
 % adapt to changing weather, seasons, or to changing climate patterns
 More sophisticated probability modeling might also take into account the weather from the past several days, or from the same day in previous years.
 A good model might blend in other related sources of information such as past and current humidity, temperature, and wind speed.
