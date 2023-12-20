@@ -257,7 +257,6 @@
 %   \previousdegrees{...}
 %   \thesistype{...}
 %   \degree{...}
-%   \discipline{...} (optional)
 %   \department{...}
 %   \faculty{...}
 %   \semester{...}
@@ -310,7 +309,6 @@
 \newcommand{\@thesistype}{THESIS \@MissingMetadata{thesistype}}
 \newcommand{\@previousdegrees}{PREVIOUS DEGREES \@MissingMetadata{previousdegrees}}
 \newcommand{\@degree}{DEGREE \@MissingMetadata{degree}}
-\newcommand{\@discipline}{} % optional
 \newcommand{\@department}{DEPARTMENT \@MissingMetadata{department}}
 \newcommand{\@faculty}{FACULTY \@MissingMetadata{faculty}}
 \newcommand{\@semester}{SEMESTER \@MissingMetadata{semester}}
@@ -329,7 +327,6 @@
 \newcommand{\previousdegrees}[1]{\renewcommand{\@previousdegrees}{#1}}
 \newcommand{\thesistype}[1]{\renewcommand{\@thesistype}{#1}}
 \newcommand{\degree}[1]{\renewcommand{\@degree}{#1}}
-\newcommand{\discipline}[1]{\renewcommand{\@discipline}{(#1)}}
 \newcommand{\department}[1]{\renewcommand{\@department}{#1}}
 \newcommand{\faculty}[1]{\renewcommand{\@faculty}{#1}}
 \newcommand{\semester}[1]{\renewcommand{\@semester}{#1}}
@@ -365,7 +362,7 @@
     \chapter*{Declaration of Committee}%
     \smallspacing%
     \@approvallabel{Name:}              \@approvalvalue{\@author}
-    \@approvallabel{Degree:}            \@approvalvalue{\@degree\ \@discipline}
+    \@approvallabel{Degree:}            \@approvalvalue{\@degree}
     \@approvallabel{Thesis title:}      \@approvalvalue{\@title}
     \@approvallabel{Committee:}         \@approvalvalue{\@committee}
     \newpage
