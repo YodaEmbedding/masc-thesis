@@ -368,7 +368,7 @@
     \smallspacing%
     \@approvallabel{Name:}              \@approvalvalue{\@author}
     \@approvallabel{Degree:}            \@approvalvalue{\@degree\ \@discipline}
-    \@approvallabel{Title:}             \@approvalvalue{\@title}
+    \@approvallabel{Thesis title:}      \@approvalvalue{\@title}
     \@approvallabel{\@committeelabel:}  \@approvalvalue{\@committee}
     \@approvallabel{\@datelabel:}       \@approvalvalue{\@date}
     \newpage
