@@ -53,10 +53,23 @@ Both of these have their advantages and disadvantages.
 Of these two, the entropy bottleneck is the most flexible at modeling arbitrary distributions.
 Indeed, it often does, modeling many channels via Laplacian-like distributions, which the latent representations often tend towards.
 However, because all elements within a given channel are modelled using the same distribution, it is quite poor at specializing and adapting to specific input distributions.
-Instead, it models a "conservative" distribution that tries to encompass all possible inputs, which is often suboptimal, as we will show later in this chapter.
+Instead, it models a "conservative" distribution that tries to encompass all possible inputs, which is often suboptimal, as visualized in \cref{fig:pdf/amortization-gap}.
 This is sometimes known as the \emph{amortization gap}~\cite{balcilar2022amortizationgap,cremer2018inferencesuboptimality}.
 In contrast, the Gaussian conditional is better at adapting to a specific input, though it is limited to modeling Gaussian distributions.
 Furthermore, it must also pay an additional cost for transmitting the distribution parameters, though this is often worth the trade-off, e.g., a savings of roughly 40\% for a 10\% increase in rate, as shown by~\cite{balle2018variational}.
+
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.8\linewidth]{img/pdf_compression/encoding-distribution-amortized-optimality.pdf}
+  \caption[Suboptimality of static amortized encoding distributions]{%
+    Visualization of the suboptimality of using a single static encoding distribution.
+    This distribution tries to "average" (in an amortized information-theoretic sense) all the best possible data-specific distributions.
+    However, the resulting distribution is less optimal than data-specific distributions.%
+  }
+  \label{fig:pdf/amortization-gap}
+\end{figure}
+
 
 In their "scale hyperprior" architecture, Ballé~\emph{et~al.}~\cite{balle2018variational} utilize an entropy bottleneck to compress the latent representation $\boldvar{z} = h_a(\boldvar{y})$.
 This is known as "side-information", and its compressed bitstream is transmitted before the bitstream for $\boldvar{y}$.
