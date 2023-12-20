@@ -20,6 +20,8 @@
   backrefstyle=none,
 ]{biblatex}
 
+\usepackage{iftex}                      % \ifPDFTeX, \ifXeTeX, \ifLuaTeX
+
 \usepackage{amssymb}
 \usepackage[titletoc]{appendix}
 \usepackage{booktabs}                   % \toprule, \midrule, \bottomrule
@@ -198,7 +200,9 @@
 
 
 % Suppress warnings
-\pdfsuppresswarningpagegroup=1
+\ifPDFTeX
+  \pdfsuppresswarningpagegroup=1
+\fi
 
 % Keep footnotes on one page
 \interfootnotelinepenalty=10000
