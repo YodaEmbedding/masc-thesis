@@ -22,7 +22,7 @@ convert_pdf_to_png "$ROOTDIR"/introduction/rd-curves-image-kodak-psnr-rgb.pdf   
 convert_pdf_to_png "$ROOTDIR"/pdf_compression/arch-both.pdf                                             3200
 convert_pdf_to_png "$ROOTDIR"/pdf_compression/arch-hasq.pdf                                             3200
 convert_pdf_to_png "$ROOTDIR"/pdf_compression/arch-overview.pdf                                         3200
-convert_pdf_to_png "$ROOTDIR"/pdf_compression/encoding-distribution-amortized-optimality.pdf            3200
+convert_pdf_to_png "$ROOTDIR"/pdf_compression/encoding-distribution-amortized-optimality.pdf            2400
 convert_pdf_to_png "$ROOTDIR"/pdf_compression/hist-kernels.pdf                                          3200
 convert_pdf_to_png "$ROOTDIR"/pdf_compression/pdfs.pdf                                                  1600
 convert_pdf_to_png "$ROOTDIR"/pdf_compression/pdfs1.pdf                                                 1600
