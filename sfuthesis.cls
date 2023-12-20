@@ -347,10 +347,10 @@
 
 
 
-%   APPROVAL PAGE  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%   DECLARATION OF COMMITTEE PAGE  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
-%   Generates a correctly formatted approval page, provided a commitee is given
-%   in the preamble as follows:
+%   Generates a correctly formatted Declaration of Committee page, provided a
+%   committee is given in the preamble as follows:
 %
 %   \committee{
 %       \chair{Name}{Academic Role, Academic Unit}
@@ -363,8 +363,8 @@
 %
 
 \newcommand{\makecommittee}{%
-    \addtoToC{Approval}%
-    \chapter*{Approval}%
+    \addtoToC{Declaration of Committee}%
+    \chapter*{Declaration of Committee}%
     \smallspacing%
     \@approvallabel{Name:}              \@approvalvalue{\@author}
     \@approvallabel{Degree:}            \@approvalvalue{\@degree\ \@discipline}
