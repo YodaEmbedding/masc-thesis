@@ -61,7 +61,7 @@ Furthermore, it must also pay an additional cost for transmitting the distributi
 
 \begin{figure}[htbp]
   \centering
-  \includegraphics[width=0.8\linewidth]{img/pdf_compression/encoding-distribution-amortized-optimality.pdf}
+  \includegraphics[width=0.8\linewidth]{img/pdf_compression/encoding-distribution-amortized-optimality.png}
   \caption[Suboptimality of static amortized encoding distributions]{%
     Visualization of the suboptimality of using a single static encoding distribution.
     This distribution tries to "average" (in an amortized information-theoretic sense) all the best possible data-specific distributions.
@@ -160,7 +160,7 @@ Each probability distribution is visualized as a 2D color plot, where
 % TODO(figure): Rename "default" to "amortized"? Then, s/default/amortized/g.
 \begin{figure}[htbp]
   \centering
-  \includegraphics[width=\linewidth]{img/pdf_compression/pdfs1.pdf}
+  \includegraphics[width=\linewidth]{img/pdf_compression/pdfs1.png}
   \caption[Visualization of target and reconstructed probability distributions]{%
     Different images from the Kodak dataset, and their corresponding negative log-likelihoods (in bits) of the true and reconstructed probability distributions.%
     % TODO What quality model was used in figure?  (probably Q=3)
@@ -171,14 +171,14 @@ Each probability distribution is visualized as a 2D color plot, where
 \begin{figure}[htbp]
   \ContinuedFloat
   \centering
-  \includegraphics[width=\linewidth]{img/pdf_compression/pdfs2.pdf}
+  \includegraphics[width=\linewidth]{img/pdf_compression/pdfs2.png}
   \caption[]{(continued)}
 \end{figure}
 
 \begin{figure}[htbp]
   \ContinuedFloat
   \centering
-  \includegraphics[width=\linewidth]{img/pdf_compression/pdfs3.pdf}
+  \includegraphics[width=\linewidth]{img/pdf_compression/pdfs3.png}
   \caption[]{(continued)}
 \end{figure}
 
@@ -199,7 +199,7 @@ This indicates that our method is capable of adapting to the input distribution 
 
 \begin{figure}[htbp]
   \centering
-  \includegraphics[width=\linewidth]{img/pdf_compression/arch-overview.pdf}
+  \includegraphics[width=\linewidth]{img/pdf_compression/arch-overview.png}
   \caption[Adaptive probability distribution compression architecture]{%
     Adaptive probability distribution compression architecture.%
   }
@@ -264,7 +264,7 @@ Thus, the hard histogram is used for the forward pass, and the differentiable so
 
 \begin{figure}[tb]
   \centering
-  \includegraphics[width=0.5\linewidth]{img/pdf_compression/hist-kernels.pdf}
+  \includegraphics[width=0.5\linewidth]{img/pdf_compression/hist-kernels.png}
   \caption[Kernel functions]{%
     Visualization of triangular kernel functions for estimating the discrete probability mass histogram.%
   }
@@ -646,7 +646,7 @@ However, we have not yet explored this possibility.
 
 \begin{figure}[htbp]
   \centering
-  \includegraphics[width=1.0\linewidth]{img/pdf_compression/arch-hasq.pdf}
+  \includegraphics[width=1.0\linewidth]{img/pdf_compression/arch-hasq.png}
   \caption[Architecture layer diagram for $h_{a,q}$ and $h_{s,q}$ transforms]{%
     Architecture layer diagram for $h_{a,q}$ and $h_{s,q}$ transforms.
     $k$ denotes kernel size, $g$ denotes number of channel groups, and $\downarrow, \uparrow$ denote stride.%
@@ -680,7 +680,7 @@ Finally, we evaluated our models on the standard Kodak test dataset~\cite{kodak_
 
 \begin{figure}[htbp]
   \centering
-  \includegraphics[width=\linewidth]{img/pdf_compression/rd-curves-kodak-psnr-bmshj2018-factorized.pdf}
+  \includegraphics[width=\linewidth]{img/pdf_compression/rd-curves-kodak-psnr-bmshj2018-factorized.png}
   \caption[RD curves for Kodak dataset]{%
     RD curves for the Kodak dataset.%
   }
