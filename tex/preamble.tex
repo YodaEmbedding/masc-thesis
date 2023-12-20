@@ -165,7 +165,13 @@
     {#1}%
   \ifitemannotation{first}
     % {\kern-0.05em\textsuperscript{$\dagger$}}
-    {\textsuperscript{\textasteriskcentered}}
+    {%
+      \ifPDFTeX%
+        \textsuperscript{\textasteriskcentered}%
+      \else%
+        $^{\ast}$%
+      \fi%
+    }
     {}%
   \ifitemannotation{last}
     {\textsuperscript{$\ddagger$}}
