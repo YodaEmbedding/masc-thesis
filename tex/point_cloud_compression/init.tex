@@ -162,7 +162,9 @@ This approach provides a baseline for comparison with our proposed codec.
     \caption{proposed}
     \label{fig:arch-comparison/proposed}
   \end{subfigure}%
-  \caption{High-level comparison of codec architectures.}
+  \caption[High-level comparison of codec architectures]{%
+    High-level comparison of codec architectures.%
+  }
   \label{fig:arch-comparison}
 \end{figure}
 
@@ -209,7 +211,9 @@ Therefore, we use pointwise convolutional layers with kernel size 1, which are e
 \begin{figure*}[tb]
   \centering
   \includegraphics[width=1.0\linewidth]{img/point_cloud_compression/arch/proposed-full.pdf}
-  \caption{Proposed codec architecture.}
+  \caption[Proposed point cloud codec architecture]{%
+    Proposed codec architecture.%
+  }
   \label{fig:arch-proposed-full}
 \end{figure*}
 
@@ -252,7 +256,9 @@ In contrast to~\cite{qi2016pointnet}, we do not use any input or feature transfo
 
 \begin{table}[t]
   \centering
-  \caption{Layer sizes and MAC counts for various proposed codec types}
+  \caption[Layer sizes and MAC counts for various proposed codec types]{%
+    Layer sizes and MAC counts for various proposed codec types.%
+  }
   \label{tbl:layers}
   %
   % \tiny
@@ -413,7 +419,9 @@ In \cref{tbl:measurements}, we list the peak accuracies attained by each codec, 
     \caption{input compression codecs}
     \label{fig:rate-accuracy/input-compression}
   \end{subfigure}%
-  \caption{Rate-accuracy curves evaluated on the ModelNet40 test set.}
+  \caption[Rate-accuracy curves evaluated on the ModelNet40 test set]{
+    Rate-accuracy curves evaluated on the ModelNet40 test set.%
+  }
   \label{fig:rate-accuracy}
 \end{figure*}
 }
@@ -423,7 +431,9 @@ In \cref{tbl:measurements}, we list the peak accuracies attained by each codec, 
 \begin{table}[t]
   \centering
   \begin{threeparttable}
-  \caption{BD metrics and max attainable accuracies per codec}
+  \caption[BD metrics and max attainable accuracies per codec]{%
+    BD metrics and max attainable accuracies per codec.%
+  }
   \label{tbl:measurements}
   % \tiny
   % \scriptsize
@@ -654,9 +664,9 @@ Above each reconstructed point cloud, we show the corresponding reference point 
     \end{subsubfigure}%
     \caption{"micro" codec}
   \end{subfigure}%
-  \caption{
+  \caption[Reconstructed point cloud samples]{%
     Reconstructions of a sample airplane 3D model from the ModelNet40 test set for various codecs and bitrates.
-    For each reconstruction, its corresponding reference point cloud is marked with \emph{critical points} in red.
+    For each reconstruction, its corresponding reference point cloud is marked with \emph{critical points} in red.%
   }
   \label{fig:rec}
 \end{figure}

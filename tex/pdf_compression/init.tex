@@ -698,7 +698,7 @@ As shown, our approach achieves a 6.95\% BD-rate reduction over the base model, 
 % TODO Maybe measure base model bpp as bpp_loss.
 \begin{table}[htbp]
   \centering
-  \caption[Rate savings for the bmshj2018-factorized model at various qualities]{%
+  \caption[Rate savings for bmshj2018-factorized per-quality]{%
     Potential and achieved rate savings for the bmshj2018-factorized model~\cite{balle2018variational} when equipped with our proposed distribution compression method.%
   }
   \label{tbl:pdf}
@@ -747,7 +747,7 @@ All models are evaluated on the Kodak dataset~\cite{kodak_dataset}.
 % TODO Apply pdf compression to Gaussian conditional, too...
 \begin{table}[htbp]
   \centering
-  \caption{%
+  \caption[Comparison of rate savings for various models]{%
     Comparison of rate savings for various models.%
   }
   \label{tbl:rate-gains}
@@ -794,7 +794,7 @@ In particular, for comparable configurations, our method's $h_{a,q}$ and $h_{s,q
 
 \begin{table}[htbp]
   \centering
-  \caption{%
+  \caption[Trainable parameters and MACs per pixel]{%
     Trainable parameter counts and number of multiply-accumulate operations (MACs) per pixel.
     % All results are reported for the Kodak dataset~\cite{kodak_dataset}.%
   }
