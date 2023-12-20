@@ -96,10 +96,8 @@
 %
 
 \RequirePackage{etoolbox}
-\newtoggle{undefended}
 \newtoggle{bound}
 
-\DeclareOption{undefended}{\toggletrue{undefended}}
 \DeclareOption{bound}{\toggletrue{bound}}
 \DeclareOption{twoside}{\toggletrue{bound}}
 
@@ -369,7 +367,7 @@
     \@approvallabel{Name:}              \@approvalvalue{\@author}
     \@approvallabel{Degree:}            \@approvalvalue{\@degree\ \@discipline}
     \@approvallabel{Thesis title:}      \@approvalvalue{\@title}
-    \@approvallabel{\@committeelabel:}  \@approvalvalue{\@committee}
+    \@approvallabel{Committee:}         \@approvalvalue{\@committee}
     \@approvallabel{\@datelabel:}       \@approvalvalue{\@date}
     \newpage
     \defaultspacing
@@ -405,8 +403,7 @@
 }
 
 %   Implementation: Have \@committee store the committee, \committee set it,
-%   and \chair and \member format its contents. If the thesis is undefended
-%   (see class options), the committee and date is labeled differently.
+%   and \chair and \member format its contents.
 
 \newcommand{\@committee}{\@MissingMetadata{committee}}
 \newcommand{\committee}[1]{\renewcommand{\@committee}{\mdseries#1}}
@@ -428,13 +425,6 @@
     #2%
     \par%
     \vspace{\baselineskip}%
-}
-
-%   Theses in some degree programs do not require a defence. In these cases,
-%   the "Examining Committee" and "Date defended" labels need to be changed.
-
-\newcommand{\@committeelabel}{%
-    \iftoggle{undefended}{Supervisory Committee}{Examining Committee}%
 }
 
 \newcommand{\@datelabel}{%
