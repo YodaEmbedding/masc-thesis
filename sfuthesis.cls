@@ -368,7 +368,6 @@
     \@approvallabel{Degree:}            \@approvalvalue{\@degree\ \@discipline}
     \@approvallabel{Thesis title:}      \@approvalvalue{\@title}
     \@approvallabel{Committee:}         \@approvalvalue{\@committee}
-    \@approvallabel{\@datelabel:}       \@approvalvalue{\@date}
     \newpage
     \defaultspacing
 }
@@ -426,11 +425,6 @@
     \par%
     \vspace{\baselineskip}%
 }
-
-\newcommand{\@datelabel}{%
-    \iftoggle{undefended}{Date Approved}{Date Defended}%
-}
-
 
 
 %   ABSTRACT AND KEYWORDS  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
