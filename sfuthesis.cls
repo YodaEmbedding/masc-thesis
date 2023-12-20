@@ -1,4 +1,4 @@
-%   Copyright (C) 2014--2015 Ross Churchley
+%   Copyright (C) 2014--2022 Ross Churchley
 %
 %   License
 %   =======
@@ -84,14 +84,10 @@
 %
 
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesClass{sfuthesis}[2018/09/09 v2.2.2 SFU Thesis/Dissertation Template]
+\ProvidesClass{sfuthesis}[2022/09/12 v2.3.3 SFU Thesis Template]
 
 
 %   CLASS OPTIONS  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%
-%   The library requires a slightly different approval page format if the
-%   thesis is accepted without a defence taking place. If this applies to you,
-%   use the `undefended` class option to format the approval page correctly.
 %
 %   The SFU Library has moved to digital-only thesis submission and no longer
 %   requires print copies of theses be submitted. However, if you do want to
@@ -324,7 +320,7 @@
 \newcommand{\@copyrightnotice}{%
     \begin{minipage}{\dimexpr\textwidth-1in\relax}
         \small\centering
-        Copyright in this work rests with the author. Please ensure that any reproduction or re-use is done in accordance with the relevant national copyright legislation.
+        Copyright in this work is held by the author. Please ensure that any reproduction or re-use is done in accordance with the relevant national copyright legislation.
     \end{minipage}
 }
 
@@ -357,9 +353,10 @@
 %   in the preamble as follows:
 %
 %   \committee{
-%       \chair{Name}{Chair}
-%       \member{Name}{Senior Supervisor \\ Title}
-%       \member{Name}{Role on Committee \\ Title \\ Affiliation}
+%       \chair{Name}{Academic Role, Academic Unit}
+%       \member{Name}{Supervisor \\ Academic Role, Academic Unit}
+%       \member{Name}{Role on the committee \\ Academic Role, Academic Unit}
+%       \member{Name}{External Examiner \\ Role \\ Affiliation}
 %   }
 %
 %   To display the committee, invoke \makecommittee.
@@ -450,9 +447,9 @@
 %
 %   Redefines the abstract environment to set it on its own page together with
 %   the keywords. While the abstract should appear in the main document after
-%   \makecopyrightdeclaration, keywords should be defined with \keyword{...}
-%   in the preamble.
-%
+%   the optional Ethics Statement (or after the \makecommittee{}), keywords
+%   should be defined with \keyword{...} in the preamble.
+
 
 \newcommand{\keywords}[1]{\renewcommand{\@keywords}{#1}}
 \newcommand{\@keywords}{KEYWORDS \@MissingMetadata{keywords}}
