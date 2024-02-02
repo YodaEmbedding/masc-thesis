@@ -59,9 +59,18 @@
 
 \clearpage
 \phantomsection
-\pdfbookmark{\contentsname}{toc}
+% \pdfbookmark{\contentsname}{toc}
+\addcontentsline{toc}{chapter}{\contentsname}
 \tableofcontents
+
+\clearpage
+\phantomsection
+\addcontentsline{toc}{chapter}{\listtablename}
 \listoftables
+
+\clearpage
+\phantomsection
+\addcontentsline{toc}{chapter}{\listfigurename}
 \listoffigures
 
 \clearpage
